@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Project;
@@ -40,9 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin Project Routes (Resource)
+// Admin Project & Skill Routes (Resource)
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('projects', AdminProjectController::class);
+    Route::resource('skills', SkillController::class);
 });
 
 require __DIR__.'/auth.php';

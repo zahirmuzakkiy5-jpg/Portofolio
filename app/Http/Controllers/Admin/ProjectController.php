@@ -22,7 +22,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -30,7 +30,15 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string',
+            'link'        => 'nullable|url',
+        ]);
+
+        Project::create($request->only('title', 'description', 'link'));
+
+        return redirect()->route('admin.projects.index')->with('success', 'Project berhasil ditambahkan!');
     }
 
     /**
@@ -38,7 +46,7 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return redirect()->route('admin.projects.edit', $id);
     }
 
     /**
@@ -46,7 +54,8 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $project = Project::findOrFail($id);
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -54,7 +63,16 @@ class ProjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string',
+            'link'        => 'nullable|url',
+        ]);
+
+        $project = Project::findOrFail($id);
+        $project->update($request->only('title', 'description', 'link'));
+
+        return redirect()->route('admin.projects.index')->with('success', 'Project berhasil diupdate!');
     }
 
     /**
@@ -62,6 +80,9 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('admin.projects.index')->with('success', 'Project berhasil dihapus!');
     }
 }
