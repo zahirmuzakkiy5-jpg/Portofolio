@@ -1,39 +1,32 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portofolio Saya</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; background-color: #f4f4f9; }
-        nav { background: #333; padding: 15px 40px; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
-        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
-        .container { margin-top: 80px; padding: 20px 40px; min-height: 80vh; }
-        footer { background: #222; color: #fff; text-align: center; padding: 20px; margin-top: 40px; }
-        footer a { color: #0d6efd; text-decoration: none; }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        @include('layouts.navigation')
 
-    <nav>
-        <a href="{{ url('/') }}">Home</a>
-        <a href="{{ url('/#about') }}">Tentang Saya</a>
-        <a href="{{ url('/#skills') }}">Skills</a>
-        <a href="{{ url('/#projects') }}">Projects</a>
-        <a href="{{ url('/#contact') }}">Contact</a>
-    </nav>
+        @isset($header)
+            <header class="bg-white dark:bg-gray-800 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endisset
 
-    <div class="container">
-        @yield('content')
+        <main>
+            {{ $slot }}
+        </main>
     </div>
-
-    <footer>
-        <p>&copy; {{ date('Y') }} Portofolio Saya. All rights reserved.</p>
-        <p>
-            <a href="https://github.com" target="_blank">GitHub</a> | 
-            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-        </p>
-    </footer>
-
 </body>
 </html>

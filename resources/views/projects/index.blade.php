@@ -1,10 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('title', 'Semua Project - Portfolio')
 
 @section('content')
-    <div style="margin-bottom: 20px;">
-        <a href="/" style="text-decoration: none; color: #007bff;">&larr; Kembali ke Home</a>
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <a href="/" style="text-decoration: none; color: #007bff; font-weight: bold; font-size: 16px;">
+            &larr; Kembali ke Home
+        </a>
     </div>
 
     <h1>Semua Project Saya</h1>
