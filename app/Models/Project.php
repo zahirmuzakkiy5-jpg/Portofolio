@@ -10,5 +10,5 @@ class Project extends Model
     use HasFactory;
 
     // Tambahkan baris ini di dalam class
-    protected $fillable = ['title', 'description', 'email'];
+    protected $fillable = ['title', 'description', 'email','is_featured'];
 }
