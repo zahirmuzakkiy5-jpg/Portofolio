@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded shadow">
-                <form method="POST" action="{{ route('admin.projects.store') }}">
+                <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-4">
@@ -28,9 +28,43 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block mb-1 font-semibold">Link Project (opsional)</label>
-                        <input type="text" name="link" value="{{ old('link') }}" class="w-full border rounded px-3 py-2">
-                        @error('link')
+                        <label class="block mb-1 font-semibold">Foto Project</label>
+                        <input type="file" name="image" class="w-full border rounded px-3 py-2">
+                        @error('image')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block mb-1 font-semibold">Link GitHub</label>
+                        <input type="text" name="github_link" value="{{ old('github_link') }}" placeholder="https://github.com/..." class="w-full border rounded px-3 py-2">
+                        @error('github_link')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block mb-1 font-semibold">Link Demo (opsional)</label>
+                        <input type="text" name="demo_link" value="{{ old('demo_link') }}" placeholder="https://..." class="w-full border rounded px-3 py-2">
+                        @error('demo_link')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block mb-1 font-semibold">Tech Stack (pisah pakai koma)</label>
+                        <input type="text" name="tech_stack" value="{{ old('tech_stack') }}" placeholder="Laravel, MySQL, Tailwind" class="w-full border rounded px-3 py-2">
+                        @error('tech_stack')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                            <span class="ml-2 font-semibold text-gray-700">Tampilkan sebagai Project Utama di Halaman Utama</span>
+                        </label>
+                        @error('is_featured')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>

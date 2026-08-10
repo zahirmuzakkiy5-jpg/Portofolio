@@ -27,7 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/all-projects', function () {
-    $projects = Project::latest()->get();
+    $projects =  Project::where('is_featured', true)->latest()->get();
     return view('projects.index', compact('projects'));
 });
 

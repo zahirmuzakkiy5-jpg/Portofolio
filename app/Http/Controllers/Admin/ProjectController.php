@@ -33,10 +33,19 @@ class ProjectController extends Controller
         $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'link'        => 'nullable|url',
+            'github_link' => 'nullable|url',
+            'demo_link'   => 'nullable|url',
+            'tech_stack'  => 'nullable|string',
+            'image'       => 'nullable|image|max:2048',
         ]);
 
-        Project::create($request->only('title', 'description', 'link'));
+        $data = $request->only('title', 'description', 'github_link', 'demo_link', 'tech_stack');
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('projects', 'public');
+        }
+
+        Project::create($data);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project berhasil ditambahkan!');
     }
@@ -66,11 +75,20 @@ class ProjectController extends Controller
         $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'link'        => 'nullable|url',
+            'github_link' => 'nullable|url',
+            'demo_link'   => 'nullable|url',
+            'tech_stack'  => 'nullable|string',
+            'image'       => 'nullable|image|max:2048',
         ]);
 
         $project = Project::findOrFail($id);
-        $project->update($request->only('title', 'description', 'link'));
+        $data = $request->only('title', 'description', 'github_link', 'demo_link', 'tech_stack');
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('projects', 'public');
+        }
+
+        $project->update($data);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project berhasil diupdate!');
     }

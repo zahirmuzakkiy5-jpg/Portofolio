@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            //
+            $table->string('github_link')->nullable()->after('link');
+            $table->string('demo_link')->nullable()->after('github_link');
+            $table->string('tech_stack')->nullable()->after('demo_link');
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            //
+            $table->dropColumn(['github_link', 'demo_link', 'tech_stack']);
         });
     }
 };
