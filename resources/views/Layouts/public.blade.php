@@ -3,42 +3,38 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <title>@yield('title', 'Portfolio Saya')</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #007bff;
-        }
-    </style>
+    @vite(['resources/css/portfolio.css', 'resources/js/certificate-modal.js', 'resources/js/sidebar.js'])
 </head>
-<body>
+<body class="@yield('page', 'page-default')">
 
-    <nav style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-        <a href="/" style="margin-right: 15px;">Home</a>
-        <a href="/#about" style="margin-right: 15px;">Tentang Saya</a>
-        <a href="/#skills" style="margin-right: 15px;">Skills</a>
-        <a href="/#projects" style="margin-right: 15px;">Projects</a>
-        <a href="/#contact">Contact</a>
+    <nav class="navbar">
+        <span class="navbar-brand" onclick="toggleSidebar()">Zahir</span>
+
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/#about">Tentang Saya</a>
+            <a href="/#skills">Skills</a>
+            <a href="/#projects">Projects</a>
+            <a href="/#contact">Contact</a>
+        </div>
     </nav>
+
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <aside id="sidebar" class="sidebar">
+        <p class="sidebar-title">Zahir</p>
+        <a href="/" class="sidebar-link">🏠 Home</a>
+        <a href="/#about" class="sidebar-link">👤 Tentang Saya</a>
+        <a href="/#skills" class="sidebar-link">🛠️ Skills</a>
+        <a href="/#projects" class="sidebar-link">💼 Projects</a>
+        <a href="/#contact" class="sidebar-link">✉️ Contact</a>
+    </aside>
 
     @yield('content')
 

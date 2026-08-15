@@ -1,11 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 /* =========================================
    PORTFOLIO STYLES
    ========================================= */
 
 /* ---------- Base ---------- */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -25,27 +26,168 @@ h1 {
 
 h2 {
     margin-top: 0;
-    color: #007bff;
+    color: var(--accent, #007bff);
+}
+
+/* ---------- Warna beda tiap halaman ---------- */
+body.page-default,
+body.page-home {
+    --accent: #007bff;
+}
+
+body.page-about {
+    --accent: #8e44ad;
+}
+
+body.page-projects {
+    --accent: #16a085;
+}
+
+body.page-project-detail {
+    --accent: #e67e22;
 }
 
 /* ---------- Navbar ---------- */
 .navbar {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
     position: sticky;
-    top: 0;
+    top: 20px;
     z-index: 100;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid var(--accent, #007bff);
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(
+        90deg,
+        var(--accent, #007bff),
+        #00c6ff,
+        var(--accent, #007bff)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: brand-shine 4s linear infinite;
+}
+
+.navbar-brand::before {
+    content: "☰";
+    -webkit-text-fill-color: initial;
+    color: var(--accent, #007bff);
+    font-size: 0.9rem;
+}
+
+@keyframes brand-shine {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .navbar a {
-    margin-right: 15px;
+    padding: 6px 14px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition:
+        color 0.15s ease,
+        border-color 0.15s ease;
 }
 
-.navbar a:last-child {
-    margin-right: 0;
+.navbar a:hover {
+    color: var(--accent, #007bff);
+    border-color: var(--accent, #007bff);
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 150;
+}
+
+.sidebar-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 240px;
+    background: #1a1a1a;
+    padding: 24px 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 200;
+}
+
+.sidebar.is-open {
+    transform: translateX(0);
+}
+
+.sidebar-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0 24px 20px 24px;
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid #333;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    color: #bbb;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-left: 3px solid transparent;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    border-left-color: var(--accent, #007bff);
 }
 
 /* ---------- Layout umum ---------- */
