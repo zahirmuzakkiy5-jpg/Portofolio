@@ -3,9 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -14,12 +12,18 @@ class ContactMessageMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $name;
+    public $emailPengirim;
+    public $pesan;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($name, $email, $message)
     {
-        //
+        $this->name = $name;
+        $this->emailPengirim = $email;
+        $this->pesan = $message;
     }
 
     /**
@@ -28,7 +32,7 @@ class ContactMessageMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Contact Message Mail',
+            subject: 'Pesan Baru dari Portfolio',
         );
     }
 
@@ -45,7 +49,7 @@ class ContactMessageMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, Attachment>
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {
