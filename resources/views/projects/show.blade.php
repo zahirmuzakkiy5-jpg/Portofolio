@@ -1,40 +1,21 @@
-@extends('layouts.public')
+@extends('Layouts.public')
 
-@section('title', $project->title . ' - Portfolio')
+@section('title', $project->title . ' — Portfolio')
+
+@push('head')
+<style>
+    .project-page{width:min(1350px,100%);margin:auto;padding:0 4vw 80px}.project-crumb{display:inline-flex;gap:12px;margin:40px 3vw 0;color:var(--muted);font:500 .63rem 'DM Mono';text-decoration:none;text-transform:uppercase}.project-crumb b{color:var(--red);font-weight:500}.project-hero{position:relative;display:grid;grid-template-columns:.78fr 1.22fr;gap:65px;padding:45px 3vw 58px;border-bottom:1px solid var(--line);overflow:hidden}.project-hero:after{content:'03 / CASE STUDY';position:absolute;right:0;top:55px;color:var(--red);font:500 .6rem 'DM Mono';letter-spacing:.12em;writing-mode:vertical-rl}.project-kicker{color:var(--red);font:500 .63rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase}.project-hero h1{margin:22px 0 17px;font:700 clamp(3rem,7vw,7.5rem)/.78 'Playfair Display';letter-spacing:-.075em}.project-hero h1 em{color:var(--red);font-style:italic}.project-lead{max-width:390px;color:var(--muted);font-size:.88rem;line-height:1.8}.project-meta{display:flex;flex-wrap:wrap;gap:28px;margin-top:35px;color:var(--muted);font:500 .6rem/1.5 'DM Mono';text-transform:uppercase}.project-meta strong{display:block;margin-top:4px;color:var(--bone);font-weight:500}.case-visual{position:relative;min-height:430px;overflow:hidden;background:linear-gradient(140deg,#11161a 0 38%,#586669 39% 54%,#dfdcd1 55% 72%,#1a2225 73%);clip-path:polygon(0 5%,96% 0,100% 92%,4% 100%);box-shadow:0 28px 80px rgba(0,0,0,.35)}.case-visual.has-image{background-position:center;background-size:cover;filter:grayscale(1)}.case-visual:before{content:'{{ str_pad((string) $project->id, 2, '0', STR_PAD_LEFT) }}';position:absolute;left:24px;bottom:-25px;color:rgba(238,234,225,.72);font:800 12rem 'DM Sans';letter-spacing:-.12em}.case-visual:after{content:'◉ SELECTED WORK / {{ optional($project->created_at)->format('Y') ?? date('Y') }}';position:absolute;right:23px;top:20px;color:var(--cyan);font:500 .58rem 'DM Mono';letter-spacing:.06em}.case-grid{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 70px,rgba(9,11,14,.13) 71px 72px),repeating-linear-gradient(0deg,transparent 0 54px,rgba(9,11,14,.14) 55px 56px);mix-blend-mode:multiply}.case-orbit{position:absolute;right:11%;bottom:13%;width:170px;height:170px;border:1px solid rgba(238,234,225,.45);border-radius:50%;animation:projectOrbit 8s ease-in-out infinite}.case-orbit:before{content:'';position:absolute;inset:20px;border:1px dashed rgba(238,234,225,.35);border-radius:50%;animation:projectSpin 15s linear infinite}.case-orbit:after{content:'';position:absolute;top:-3px;left:50%;width:7px;height:7px;border-radius:50%;background:var(--bone);box-shadow:0 0 14px var(--bone)}.project-content{display:grid;grid-template-columns:.72fr 1.28fr;gap:75px;padding:75px 5vw 0}.project-content h2{margin:0;font:700 clamp(2.2rem,4.8vw,5rem)/.86 'Playfair Display';letter-spacing:-.065em}.project-copy{color:var(--muted);font-size:.9rem;line-height:1.9}.project-copy p{margin:0 0 22px}.tech-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:27px}.tech-row span{padding:9px 11px;color:var(--bone);border:1px solid var(--line);font:500 .63rem 'DM Mono';transition:.2s}.tech-row span:hover{color:var(--cyan);border-color:var(--cyan);transform:translateY(-3px)}.project-command{display:flex;align-items:center;gap:8px;margin-top:26px;color:var(--muted);font:500 .64rem 'DM Mono'}.project-command b{color:var(--red);font-weight:500}.project-cursor{width:6px;height:1em;background:var(--red);animation:projectBlink .8s steps(1,end) infinite}.project-links{display:flex;gap:18px;margin-top:30px}.project-links a{color:var(--red);font:500 .64rem 'DM Mono';text-decoration:none;text-transform:uppercase}.project-links a:hover{color:var(--cyan)}.project-footer{display:flex;justify-content:space-between;margin:75px 5vw 0;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font:500 .6rem 'DM Mono'}.project-footer a{color:var(--red);text-decoration:none}.project-footer a:hover{color:var(--cyan)}@keyframes projectSpin{to{transform:rotate(360deg)}}@keyframes projectOrbit{0%,100%{transform:rotate(-15deg) translateY(0)}50%{transform:rotate(-8deg) translateY(-8px)}}@keyframes projectBlink{0%,45%,100%{opacity:1}46%,70%{opacity:0}}@media(max-width:900px){.project-hero{grid-template-columns:1fr;gap:35px;padding-top:35px}.case-visual{min-height:340px}.project-content{grid-template-columns:1fr;gap:30px;padding-top:60px}.project-footer{margin-left:0;margin-right:0}}@media(max-width:560px){.project-page{padding-left:18px;padding-right:18px}.project-crumb{margin-left:0}.project-hero{padding-left:0;padding-right:0}.project-hero h1{font-size:clamp(3.2rem,15vw,5rem)}.project-meta{gap:16px}.case-visual{min-height:275px}.project-content{padding-left:0;padding-right:0}.project-footer{flex-direction:column;gap:14px}}
+</style>
+@endpush
 
 @section('content')
-    <div style="margin-bottom: 20px;">
-        <a href="{{ url('/') }}#projects" style="color: #007bff; text-decoration: none;">&larr; Kembali ke Projects</a>
-    </div>
-
-    <div class="card">
-        @if ($project->image)
-            <img src="{{ asset('storage/' . $project->image) }}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 20px;">
-        @endif
-
-        <h1 style="color: #007bff;">{{ $project->title }}</h1>
-        <small style="color: #777;">Dibuat pada: {{ $project->created_at->format('d M Y') }}</small>
-
-        @if ($project->tech_stack)
-            <div style="margin: 15px 0;">
-                @foreach (explode(',', $project->tech_stack) as $tech)
-                    <span style="display: inline-block; background: #e7f1ff; color: #007bff; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; margin-right: 5px; margin-bottom: 5px;">{{ trim($tech) }}</span>
-                @endforeach
-            </div>
-        @endif
-
-        <div style="margin: 20px 0;">
-            <h3>Deskripsi</h3>
-            <p>{{ $project->description }}</p>
-        </div>
-
-        <div style="margin-top: 20px;">
-            @if ($project->github_link)
-                <a href="{{ $project->github_link }}" target="_blank" style="display: inline-block; padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px; font-weight: bold;">Lihat Source Code</a>
-            @endif
-            @if ($project->demo_link)
-                <a href="{{ $project->demo_link }}" target="_blank" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Lihat Live Demo</a>
-            @endif
-        </div>
-    </div>
+<div class="project-page">
+    <a class="project-crumb" href="{{ url('/all-projects') }}"><b>←</b> Back to archive</a>
+    <section class="project-hero" aria-labelledby="project-title">
+        <div><div class="project-kicker">{{ $project->is_featured ? 'Selected project' : 'Web project' }}</div><h1 id="project-title">{{ $project->title }}</h1><p class="project-lead">{{ $project->description }}</p><div class="project-meta"><div>Role<strong>Design · Build</strong></div><div>Year<strong>{{ optional($project->created_at)->format('Y') ?? date('Y') }}</strong></div><div>Status<strong>{{ $project->is_featured ? 'Selected' : 'In progress' }}</strong></div></div></div>
+        @if ($project->image)<div class="case-visual has-image" style="background-image:linear-gradient(rgba(9,11,14,.08),rgba(9,11,14,.26)),url('{{ asset('storage/' . $project->image) }}')"><div class="case-grid"></div><div class="case-orbit" aria-hidden="true"></div></div>@else<div class="case-visual"><div class="case-grid"></div><div class="case-orbit" aria-hidden="true"></div></div>@endif
+    </section>
+    <section class="project-content"><div><div class="project-kicker">Project notes</div><h2>Make it<br>feel clear.</h2>@if($project->tech_stack)<div class="tech-row">@foreach(explode(',', $project->tech_stack) as $tech) @if(trim($tech) !== '')<span>{{ trim($tech) }}</span>@endif @endforeach</div>@endif</div><div class="project-copy"><p>{{ $project->description }}</p><p>Project ini menjadi ruang untuk menggabungkan struktur backend dengan visual yang punya karakter. Setiap bagian dibuat agar jelas, berguna, dan tetap punya identitas.</p><div class="project-command"><b>&gt;</b><span>caseStudy.open()</span><span class="project-cursor" aria-hidden="true"></span></div><div class="project-links">@if($project->github_link)<a href="{{ $project->github_link }}" target="_blank" rel="noreferrer">View source ↗</a>@endif @if($project->demo_link)<a href="{{ $project->demo_link }}" target="_blank" rel="noreferrer">Live demo ↗</a>@endif</div></div></section>
+    <footer class="project-footer"><span>✳ ZAY / CASE STUDY · {{ date('Y') }}</span><a href="{{ url('/all-projects') }}">Back to archive →</a></footer>
+</div>
 @endsection
