@@ -5,483 +5,416 @@
 @push('head')
 <style>
     :root {
-        --paper: #f7f3ec;
-        --paper-deep: #eee7db;
-        --ink: #18243a;
-        --ink-soft: #455064;
-        --navy: #19304f;
-        --coral: #d96845;
-        --coral-soft: #f0c7b7;
-        --line: #d9d0c2;
-        --white: #fffdf9;
-        --shadow: 0 24px 60px rgba(33, 42, 57, .10);
+        --paper: #f4f3ee;
+        --paper-alt: #ebe9e2;
+        --ink: #111111;
+        --muted: #66645f;
+        --line: #bdbab2;
+        --red: #a83a2e;
+        --white: #ffffff;
+        --shadow: 0 18px 45px rgba(17, 17, 17, .12);
     }
 
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
     body {
-        margin: 0;
         background: var(--paper);
         color: var(--ink);
         font-family: 'DM Sans', sans-serif;
     }
 
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        opacity: .22;
-        z-index: -1;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
-    }
-
     .site-header {
-        background: rgba(247, 243, 236, .92) !important;
-        border-bottom: 1px solid var(--line) !important;
-        box-shadow: none !important;
+        background: rgba(244, 243, 238, .96) !important;
+        color: var(--ink) !important;
+        border-color: var(--ink) !important;
     }
 
-    .site-brand { color: var(--navy) !important; }
-    .site-brand span { color: var(--coral) !important; }
-    .site-nav a { color: var(--ink-soft) !important; }
-    .site-nav a:hover, .site-nav a:focus { color: var(--coral) !important; }
-    .header-contact { background: var(--navy) !important; color: var(--white) !important; }
+    .site-brand, .site-nav a { color: var(--ink) !important; }
+    .site-brand span, .site-nav a:hover { color: var(--red) !important; }
+    .header-contact { background: var(--ink) !important; }
+    .header-contact:hover { background: var(--red) !important; }
 
-    .home-shell {
-        max-width: 1220px;
+    .editorial-page {
+        width: min(1450px, 100%);
         margin: 0 auto;
-        padding: 0 42px 90px;
+        padding: 0 4vw 50px;
+        overflow: hidden;
     }
 
-    .hero {
-        min-height: 650px;
+    .hero-editorial {
+        position: relative;
+        min-height: calc(100vh - 76px);
         display: grid;
-        grid-template-columns: minmax(0, 1.04fr) minmax(360px, .96fr);
+        grid-template-columns: minmax(0, 1.18fr) minmax(360px, .82fr);
         align-items: center;
-        gap: 42px;
-        padding: 82px 0 70px;
-        border-bottom: 1px solid var(--line);
+        gap: 35px;
+        padding: 70px 0 44px;
+        border-bottom: 1px solid var(--ink);
     }
 
-    .eyebrow {
+    .hero-editorial::before {
+        content: '01';
+        position: absolute;
+        top: 55px;
+        left: 0;
+        color: var(--red);
+        font: 500 1.2rem 'DM Mono', monospace;
+    }
+
+    .hero-copy { padding: 38px 0 0 5vw; }
+
+    .archive-label {
         display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--coral);
-        font: 500 .76rem/1 'DM Mono', monospace;
-        letter-spacing: .12em;
+        gap: 15px;
+        color: var(--muted);
+        font: .68rem/1.4 'DM Mono', monospace;
+        letter-spacing: .1em;
         text-transform: uppercase;
     }
 
-    .eyebrow::before { content: '✳'; font-size: 1.05rem; }
+    .archive-label::before { content: '/'; color: var(--red); }
 
-    .hero h1 {
-        max-width: 720px;
-        margin: 20px 0 22px;
-        color: var(--navy);
-        font: 700 clamp(3.2rem, 7.5vw, 7.2rem)/.92 'Playfair Display', serif;
-        letter-spacing: -.055em;
+    .hero-title {
+        max-width: 850px;
+        margin: 28px 0 24px;
+        color: var(--ink);
+        font: 800 clamp(3.5rem, 8.3vw, 8.9rem)/.78 'Playfair Display', serif;
+        letter-spacing: -.075em;
+        text-transform: uppercase;
     }
 
-    .hero h1 em { color: var(--coral); font-style: italic; display: inline-block; animation: titlePulse 4s ease-in-out infinite; }
+    .hero-title .red { color: var(--red); font-style: italic; }
+    .hero-title .slash { color: var(--red); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+    .hero-title .small-word { display: block; font-size: .56em; letter-spacing: -.055em; }
 
-    .hero-title-mark {
-        display: inline-block;
-        margin-left: 8px;
-        color: var(--coral);
-        font: 500 .8rem 'DM Mono', monospace;
-        letter-spacing: .1em;
-        vertical-align: top;
-        animation: editorialBlink 1.6s steps(1, end) infinite;
+    .hero-rule { width: min(760px, 100%); height: 2px; margin: 22px 0 26px; background: var(--ink); }
+
+    .hero-description {
+        max-width: 490px;
+        color: var(--muted);
+        font-size: .96rem;
+        line-height: 1.7;
     }
 
-    .hero-copy {
-        max-width: 510px;
-        color: var(--ink-soft);
-        font-size: 1.03rem;
-        line-height: 1.8;
+    .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+        margin-top: 28px;
+        color: var(--muted);
+        font: .68rem/1.5 'DM Mono', monospace;
+        text-transform: uppercase;
     }
 
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .hero-meta strong { display: block; margin-top: 3px; color: var(--red); font-weight: 500; }
 
-    .button {
+    .hero-actions { display: flex; gap: 18px; margin-top: 28px; }
+
+    .editorial-button {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        min-height: 46px;
-        padding: 0 20px;
-        border: 1px solid var(--navy);
-        border-radius: 2px;
+        gap: 14px;
+        padding: 12px 0;
+        color: var(--ink);
+        border-bottom: 1px solid var(--ink);
+        font: 500 .72rem 'DM Mono', monospace;
         text-decoration: none;
-        font-weight: 700;
-        font-size: .88rem;
-        transition: transform .2s ease, background .2s ease, color .2s ease;
+        text-transform: uppercase;
+        transition: color .2s ease, border-color .2s ease, transform .2s ease;
     }
 
-    .button:hover { transform: translateY(-2px); }
-    .button-primary { background: var(--navy); color: var(--white); }
-    .button-secondary { color: var(--navy); background: transparent; }
-    .button-secondary:hover { background: var(--navy); color: var(--white); }
+    .editorial-button:hover { color: var(--red); border-color: var(--red); transform: translateX(4px); }
+    .editorial-button.primary { color: var(--red); border-color: var(--red); }
 
-    .hero-note {
-        margin-top: 26px;
-        color: #778092;
-        font: .72rem/1.6 'DM Mono', monospace;
-    }
-
-    .hero-note strong { color: var(--red); font-weight: 500; }
-
-    .hero-note-cursor {
-        display: inline-block;
-        width: 7px;
-        height: 14px;
-        margin-left: 4px;
-        background: var(--red);
-        vertical-align: -2px;
-        animation: editorialBlink .9s steps(1, end) infinite;
-    }
-
-    .hero-visual {
+    .hero-figure {
         position: relative;
-        min-height: 530px;
+        min-height: 620px;
         display: flex;
         align-items: flex-end;
         justify-content: center;
     }
 
-    .hero-visual::before {
+    .hero-figure::before {
         content: '';
         position: absolute;
-        right: 3%;
-        bottom: 0;
-        width: 86%;
-        height: 72%;
-        border-radius: 48% 48% 0 0;
-        background: var(--coral-soft);
+        inset: 8% 11% 0 7%;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        transform: skewY(-3deg);
+        pointer-events: none;
     }
 
-    .hero-visual::after {
-        content: 'PORTFOLIO / 2026';
+    .hero-figure::after {
+        content: 'AVAILABLE FOR WORK';
         position: absolute;
+        top: 8%;
         right: 0;
-        top: 34px;
-        color: var(--coral);
-        font: .7rem 'DM Mono', monospace;
-        letter-spacing: .15em;
+        color: var(--red);
+        font: .62rem 'DM Mono', monospace;
+        letter-spacing: .1em;
         transform: rotate(90deg) translateX(100%);
         transform-origin: right top;
     }
 
-    .hero-photo {
+    .hero-person {
         position: relative;
-        z-index: 1;
-        align-self: flex-end;
-        width: min(100%, 530px);
-        max-height: 600px;
+        z-index: 2;
+        width: min(100%, 475px);
+        max-height: 630px;
         object-fit: contain;
         object-position: center bottom;
-        filter: drop-shadow(18px 18px 0 rgba(25, 48, 79, .08));
+        filter: grayscale(1) contrast(1.08) drop-shadow(16px 18px 0 rgba(17, 17, 17, .07));
+        animation: personFloat 6s ease-in-out infinite;
     }
 
     .hero-placeholder {
         position: relative;
-        z-index: 1;
-        align-self: flex-end;
-        width: 330px;
-        height: 430px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--navy);
-        font: italic 4.4rem 'Playfair Display', serif;
-    }
-
-    .floating-label {
-        position: absolute;
         z-index: 2;
-        left: 0;
-        bottom: 36px;
-        max-width: 190px;
-        padding: 15px 17px;
-        color: var(--white);
-        background: var(--navy);
-        font: .72rem/1.5 'DM Mono', monospace;
+        color: var(--muted);
+        font: italic 4rem 'Playfair Display', serif;
+        text-align: center;
     }
 
-    .section-block { padding: 90px 0; border-bottom: 1px solid var(--line); }
-
-    .section-heading { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; margin-bottom: 40px; }
-
-    .section-kicker { color: var(--coral); font: .75rem 'DM Mono', monospace; letter-spacing: .13em; text-transform: uppercase; }
-
-    .section-heading h2 {
-        margin: 0;
-        color: var(--navy);
-        font: 700 clamp(2.2rem, 4vw, 4rem)/1 'Playfair Display', serif;
-        letter-spacing: -.04em;
+    .hero-note {
+        position: absolute;
+        z-index: 3;
+        right: -8px;
+        bottom: 18%;
+        max-width: 160px;
+        color: var(--ink);
+        font: .68rem/1.5 'DM Mono', monospace;
+        transform: rotate(-5deg);
     }
 
-    .section-heading p { max-width: 540px; margin: 8px 0 0; color: var(--ink-soft); line-height: 1.75; }
+    .hero-note::before { content: '→'; display: block; color: var(--red); font-size: 1.6rem; }
 
-    .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 52px; align-items: center; }
+    .selected-work {
+        padding: 26px 0 0;
+        border-bottom: 1px solid var(--ink);
+    }
 
-    .about-photo-wrap { position: relative; min-height: 340px; }
-    .about-photo-wrap::before { content: ''; position: absolute; inset: 24px 25px 0 0; background: var(--paper-deep); }
-    .about-photo { position: relative; width: 100%; height: 340px; object-fit: cover; filter: saturate(.78); }
-    .about-placeholder { position: relative; height: 340px; display: grid; place-items: center; color: var(--coral); font: italic 3.5rem 'Playfair Display', serif; }
+    .work-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 16px; }
+    .section-label { color: var(--red); font: .68rem 'DM Mono', monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .work-heading h2 { margin: 6px 0 0; font: 700 clamp(1.6rem, 3vw, 2.5rem)/1 'Playfair Display', serif; }
+    .work-heading a { color: var(--red); font: .68rem 'DM Mono', monospace; text-decoration: none; text-transform: uppercase; }
 
-    .about-copy { color: var(--ink-soft); font-size: 1.06rem; line-height: 1.9; }
-    .about-signature { margin-top: 24px; color: var(--coral); font: italic 1.35rem 'Playfair Display', serif; }
+    .work-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 
-    .skills-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-    .skill-row { padding: 19px 16px 19px 0; border-bottom: 1px solid var(--line); }
-    .skill-name { display: flex; justify-content: space-between; gap: 20px; color: var(--navy); font-weight: 700; }
-    .skill-name span { color: var(--coral); font: .72rem 'DM Mono', monospace; }
-    .skill-description { margin: 8px 0 0; color: var(--ink-soft); font-size: .88rem; line-height: 1.55; }
-    .certificate-link { display: inline-block; margin-top: 8px; color: var(--coral); font-size: .8rem; text-decoration: underline; }
-
-    .projects-toolbar { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
-    .projects-toolbar h2 { margin: 0; color: var(--navy); font: 700 clamp(2rem, 4vw, 3.2rem)/1 'Playfair Display', serif; }
-    .projects-toolbar a { color: var(--coral); font-weight: 700; text-decoration: none; }
-
-    .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-    .project-card {
+    .work-card {
         --rx: 0deg;
         --ry: 0deg;
-        --lift: 0px;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-height: 172px;
         background: var(--white);
-        border: 1px solid var(--line);
-        transition: transform .18s ease, box-shadow .22s ease;
-        transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
+        border: 1px solid var(--ink);
+        transform: perspective(850px) rotateX(var(--rx)) rotateY(var(--ry));
+        transition: transform .16s ease, background .2s ease, color .2s ease;
         transform-style: preserve-3d;
-        will-change: transform;
     }
 
-    .project-card:nth-child(2) { animation: projectFloat 5s ease-in-out 1s infinite; }
-    .project-card:nth-child(3) { animation: projectFloat 5.4s ease-in-out 1.7s infinite; }
-    .project-card:hover { --lift: -7px; box-shadow: var(--shadow); animation-play-state: paused; }
-    .project-image, .project-image-placeholder { display: block; width: 100%; height: 190px; object-fit: cover; background: var(--paper-deep); }
-    .project-image-placeholder { display: grid; place-items: center; color: var(--coral); font: italic 2.5rem 'Playfair Display', serif; }
-    .project-content { padding: 20px; }
-    .project-content h3 { margin: 0 0 9px; color: var(--navy); font: 700 1.25rem 'Playfair Display', serif; }
-    .project-content p { min-height: 44px; margin: 0 0 14px; color: var(--ink-soft); font-size: .88rem; line-height: 1.55; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
-    .project-tag { padding: 4px 8px; color: var(--navy); border: 1px solid var(--coral-soft); border-radius: 999px; font: .68rem 'DM Mono', monospace; }
-    .project-link { color: var(--coral); font-weight: 700; font-size: .82rem; text-decoration: none; }
+    .work-card:hover { background: var(--ink); color: var(--white); }
+    .work-card:hover .work-card-meta, .work-card:hover .work-card-link { color: #d7d3ca; }
+    .work-card-image { width: 100%; height: 90px; object-fit: cover; filter: grayscale(1); border-bottom: 1px solid var(--ink); }
+    .work-card-body { padding: 11px 13px; }
+    .work-card-number { color: var(--red); font: .66rem 'DM Mono', monospace; }
+    .work-card-title { margin: 7px 0 4px; font: 700 1rem 'Playfair Display', serif; }
+    .work-card-meta, .work-card-link { color: var(--muted); font: .63rem 'DM Mono', monospace; text-decoration: none; }
+    .work-card-link { display: block; margin-top: 13px; color: var(--red); }
 
-    .contact-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 52px; align-items: start; }
-    .contact-copy { color: var(--ink-soft); line-height: 1.75; }
-    .contact-email { display: inline-block; margin-top: 18px; color: var(--navy); font: 600 1rem 'DM Mono', monospace; text-decoration: none; border-bottom: 1px solid var(--coral); }
+    .supporting-section { padding: 90px 5vw; border-bottom: 1px solid var(--ink); }
+    .supporting-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 70px; align-items: start; }
+    .supporting-grid h2 { margin: 0; font: 700 clamp(2.3rem, 5vw, 5rem)/.9 'Playfair Display', serif; letter-spacing: -.06em; }
+    .supporting-copy { color: var(--muted); line-height: 1.8; }
+    .supporting-sign { margin-top: 28px; color: var(--red); font: italic 1.5rem 'Playfair Display', serif; }
+
+    .photo-secondary { width: min(100%, 440px); max-height: 330px; object-fit: cover; filter: grayscale(1); border: 1px solid var(--ink); }
+    .skill-list { border-top: 1px solid var(--line); }
+    .skill-item { padding: 15px 0; border-bottom: 1px solid var(--line); }
+    .skill-item-top { display: flex; justify-content: space-between; gap: 15px; color: var(--ink); font-weight: 700; }
+    .skill-item-top span { color: var(--red); font: .66rem 'DM Mono', monospace; }
+    .skill-item p { margin: 6px 0 0; color: var(--muted); font-size: .84rem; line-height: 1.5; }
+    .certificate-link { display: inline-block; margin-top: 7px; color: var(--red); border: 0; background: none; cursor: pointer; font: .72rem 'DM Mono', monospace; text-decoration: underline; }
+
+    .contact-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; }
+    .contact-grid h2 { margin: 0; font: 700 clamp(2.3rem, 5vw, 5rem)/.9 'Playfair Display', serif; letter-spacing: -.06em; }
+    .contact-grid p { color: var(--muted); line-height: 1.7; }
+    .contact-email { color: var(--red); font: .82rem 'DM Mono', monospace; text-decoration: none; border-bottom: 1px solid var(--red); }
     .contact-form { display: grid; gap: 12px; }
-    .contact-form input, .contact-form textarea { width: 100%; padding: 15px 16px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 0; font: .9rem 'DM Sans', sans-serif; }
-    .contact-form textarea { min-height: 150px; resize: vertical; }
-    .contact-form input:focus, .contact-form textarea:focus { outline: 2px solid var(--coral-soft); border-color: var(--coral); }
+    .contact-form input, .contact-form textarea { width: 100%; padding: 14px; color: var(--ink); background: var(--white); border: 1px solid var(--ink); border-radius: 0; font: .82rem 'DM Mono', monospace; }
+    .contact-form textarea { min-height: 140px; resize: vertical; }
     .contact-form button { width: fit-content; cursor: pointer; }
-    .success-message { padding: 12px 14px; color: #276a4b; background: #e4f1e8; border-left: 3px solid #4e9c72; }
+    .success-message { padding: 12px; border-left: 3px solid var(--red); color: var(--red); background: var(--paper-alt); }
 
-    .site-footer { padding: 32px 0 0; color: #7c8491; font: .72rem 'DM Mono', monospace; text-align: center; }
+    .editorial-footer { padding: 28px 0 0; color: var(--muted); font: .65rem 'DM Mono', monospace; text-align: center; }
 
-    .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; padding: 24px; background: rgba(24, 36, 58, .75); }
+    .modal-backdrop { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; padding: 24px; background: rgba(17, 17, 17, .82); }
     .modal-backdrop.is-open { display: flex; }
-    .modal-card { position: relative; width: min(720px, 100%); max-height: 90vh; overflow: auto; padding: 22px; background: var(--paper); }
-    .modal-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; cursor: pointer; border: 0; background: var(--coral); color: var(--white); font-size: 1.3rem; }
-    #certModalContent { margin-top: 18px; text-align: center; }
+    .modal-card { position: relative; width: min(760px, 100%); max-height: 90vh; overflow: auto; padding: 22px; background: var(--paper); border: 1px solid var(--ink); }
+    .modal-close { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; color: var(--white); background: var(--red); border: 0; cursor: pointer; font-size: 1.2rem; }
+    #certModalContent { margin-top: 15px; text-align: center; }
 
-    @keyframes titlePulse {
-        0%, 100% { transform: translateY(0) rotate(-1deg); }
-        50% { transform: translateY(-5px) rotate(1deg); }
-    }
+    @keyframes personFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    @keyframes inkBlink { 0%, 46%, 100% { opacity: 1; } 47%, 55% { opacity: 0; } }
+    @keyframes redPulse { 0%, 100% { opacity: .8; } 50% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
-    @keyframes editorialBlink {
-        0%, 45%, 100% { opacity: 1; }
-        46%, 55% { opacity: 0; }
-    }
+    .typing-cursor { display: inline-block; width: 7px; height: 1em; margin-left: 4px; background: var(--red); vertical-align: -2px; animation: inkBlink .9s steps(1, end) infinite; }
+    .red-pulse { animation: redPulse 2.4s ease-in-out infinite; }
 
-    @keyframes projectFloat {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
-    }
-
-    @media (max-width: 850px) {
-        .home-shell { padding: 0 24px 60px; }
-        .hero { grid-template-columns: 1fr; padding-top: 58px; }
-        .hero-visual { min-height: 420px; order: -1; }
-        .hero h1 { font-size: clamp(3.2rem, 15vw, 6rem); }
-        .section-heading, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 24px; }
-        .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 900px) {
+        .hero-editorial { min-height: auto; grid-template-columns: 1fr; padding-top: 75px; }
+        .hero-copy { padding-left: 0; }
+        .hero-figure { min-height: 470px; order: -1; }
+        .hero-title { font-size: clamp(3.2rem, 12vw, 7rem); }
+        .work-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .supporting-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
     }
 
     @media (max-width: 560px) {
-        .hero-visual { min-height: 360px; }
-        .hero-photo { max-height: 390px; }
-        .floating-label { left: -8px; bottom: 10px; }
-        .skills-list, .project-grid { grid-template-columns: 1fr; }
-        .projects-toolbar { align-items: flex-start; flex-direction: column; }
+        .editorial-page { padding: 0 20px 35px; }
+        .hero-editorial { padding-top: 58px; }
+        .hero-title { font-size: clamp(2.75rem, 15vw, 5rem); }
+        .hero-meta { gap: 14px; }
+        .hero-figure { min-height: 390px; }
+        .hero-note { right: 0; bottom: 6%; }
+        .work-strip { grid-template-columns: 1fr; }
+        .supporting-section { padding: 65px 0; }
     }
 </style>
 @endpush
 
 @section('content')
-<div class="home-shell">
-    <section class="hero" id="home">
-        <div class="hero-copy-block">
-            <div class="eyebrow">Portfolio / 2026</div>
-            <h1>I'm <em>{{ $profile->name ?? 'Zahir Muzakkiy' }}</em><span class="hero-title-mark">/ 01</span>.</h1>
-            <p class="hero-copy">
-                {{ $profile->bio ?? 'Siswa SMK yang sedang membangun kemampuan web development, satu project kecil demi satu project yang lebih berani.' }}
+<div class="editorial-page">
+    <section class="hero-editorial" id="home">
+        <div class="hero-copy">
+            <div class="archive-label">Portfolio archive</div>
+            <h1 class="hero-title">
+                <span>Zahir</span>
+                <span class="red">Muzakkiy</span><span class="slash"> /</span>
+                <span class="small-word">Web Developer</span>
+            </h1>
+            <div class="hero-rule"></div>
+            <p class="hero-description">
+                {{ $profile->bio ?? 'Saya membangun website yang sederhana, berguna, dan terus berkembang — dengan rasa ingin tahu, kode, dan banyak percobaan.' }}
             </p>
-
+            <div class="hero-meta">
+                <div>Based in<strong>Indonesia</strong></div>
+                <div>Focus<strong>Web development</strong></div>
+                <div>Available<strong>For freelance</strong></div>
+            </div>
             <div class="hero-actions">
-                <a href="#projects" class="button button-primary">Lihat project <span>↗</span></a>
-                <a href="#contact" class="button button-secondary">Mari ngobrol</a>
+                <a class="editorial-button primary" href="#projects">View selected work <span>→</span></a>
+                <a class="editorial-button" href="#contact">Let's build <span>↗</span></a>
             </div>
-
-            <p class="hero-note"><strong id="heroRoleText">Currently learning Laravel</strong> · open for internship / freelance<span class="hero-note-cursor" aria-hidden="true"></span></p>
+            <p class="hero-description" style="margin-top: 18px; font: .68rem 'DM Mono', monospace;">
+                <span id="heroRoleText">currently learning Laravel</span><span class="typing-cursor" aria-hidden="true"></span>
+            </p>
         </div>
 
-        <div class="hero-visual">
+        <div class="hero-figure">
             @if ($profile && $profile->photo)
-                <img class="hero-photo" src="{{ asset('storage/' . $profile->photo) }}" alt="{{ $profile->name ?? 'Profile photo' }}">
+                <img class="hero-person" src="{{ asset('storage/' . $profile->photo) }}" alt="{{ $profile->name ?? 'Zahir Muzakkiy' }}">
             @else
-                <div class="hero-placeholder">your<br>portrait</div>
+                <div class="hero-placeholder">your<br>full-body<br>portrait</div>
             @endif
-            <div class="floating-label">A curious developer with a notebook full of ideas.</div>
+            <div class="hero-note">Focused on crafting things that matter.</div>
         </div>
     </section>
 
-    <section class="section-block" id="about">
-        <div class="section-heading">
-            <div class="section-kicker">01 / Tentang saya</div>
+    <section class="selected-work" id="projects">
+        <div class="work-heading">
             <div>
-                <h2>Belajar dengan membuat.</h2>
-                <p>Bukan sekadar menulis kode, tetapi memahami alasan di balik setiap halaman dan pengalaman yang dibangun.</p>
+                <div class="section-label">02 / Selected works</div>
+                <h2>Projects in progress.</h2>
             </div>
+            <a href="{{ url('/all-projects') }}">All projects →</a>
         </div>
 
-        <div class="about-grid">
-            <div class="about-photo-wrap">
-                @if ($profile && $profile->photo_secondary)
-                    <img class="about-photo" src="{{ asset('storage/' . $profile->photo_secondary) }}" alt="Tentang {{ $profile->name ?? 'Zahir' }}">
-                @else
-                    <div class="about-placeholder">a little<br>about me</div>
-                @endif
-            </div>
-            <div>
-                <p class="about-copy">{{ $profile->bio ?? 'Halo! Saya sedang belajar web development menggunakan Laravel. Saya suka mengubah ide sederhana menjadi halaman yang bisa digunakan, dipahami, dan terus dikembangkan.' }}</p>
-                <div class="about-signature">— Zahir Muzakkiy</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-block" id="skills">
-        <div class="section-heading">
-            <div class="section-kicker">02 / Skills</div>
-            <div>
-                <h2>Tools yang saya gunakan.</h2>
-                <p>Setiap skill di sini adalah bagian dari proses belajar yang masih terus berkembang.</p>
-            </div>
-        </div>
-
-        <div class="skills-list">
-            @forelse ($skills as $skill)
-                <div class="skill-row">
-                    <div class="skill-name">
-                        <span style="color: var(--navy); font: 700 1rem 'DM Sans', sans-serif; letter-spacing: 0; text-transform: none;">{{ $skill->name }}</span>
-                        <span>{{ $skill->obtained_at ? \Carbon\Carbon::parse($skill->obtained_at)->format('Y') : 'learning' }}</span>
-                    </div>
-                    @if ($skill->description)
-                        <p class="skill-description">{{ $skill->description }}</p>
-                    @endif
-                    @if ($skill->certificate)
-                        @php $ext = strtolower(pathinfo($skill->certificate, PATHINFO_EXTENSION)); @endphp
-                        <button type="button" class="certificate-link" onclick="openCertModal('{{ asset('storage/' . $skill->certificate) }}', '{{ $ext }}')">Lihat sertifikat ↗</button>
-                    @endif
-                </div>
-            @empty
-                <p class="skill-description">Belum ada skill ditambahkan.</p>
-            @endforelse
-        </div>
-    </section>
-
-    <section class="section-block" id="projects">
-        <div class="projects-toolbar">
-            <div>
-                <div class="section-kicker">03 / Selected work</div>
-                <h2>Project terbaru.</h2>
-            </div>
-            <a href="{{ url('/all-projects') }}">Lihat semua project ↗</a>
-        </div>
-
-        <div class="project-grid">
-            @forelse ($projects as $project)
-                <article class="project-card" data-tilt-card>
+        <div class="work-strip">
+            @forelse ($projects->take(4) as $project)
+                <article class="work-card" data-tilt-card>
                     @if ($project->image)
-                        <img class="project-image" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
-                    @else
-                        <div class="project-image-placeholder">project no. {{ $loop->iteration }}</div>
+                        <img class="work-card-image" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
                     @endif
-                    <div class="project-content">
-                        <h3>{{ $project->title }}</h3>
-                        <p>{{ \Illuminate\Support\Str::limit($project->description, 100) }}</p>
-                        @if ($project->tech_stack)
-                            <div class="project-tags">
-                                @foreach (explode(',', $project->tech_stack) as $tech)
-                                    @if (trim($tech) !== '')
-                                        <span class="project-tag">{{ trim($tech) }}</span>
-                                    @endif
-                                @endforeach
-                            </div>
-                        @endif
-                        <a class="project-link" href="{{ url('/projects/' . $project->id) }}">View detail ↗</a>
+                    <div class="work-card-body">
+                        <div class="work-card-number">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</div>
+                        <h3 class="work-card-title">{{ $project->title }}</h3>
+                        <div class="work-card-meta">{{ \Illuminate\Support\Str::limit($project->description, 55) }}</div>
+                        <a class="work-card-link" href="{{ url('/projects/' . $project->id) }}">View project →</a>
                     </div>
                 </article>
             @empty
-                <p class="skill-description">Belum ada project ditambahkan.</p>
+                <p class="hero-description">Belum ada project ditambahkan.</p>
             @endforelse
         </div>
     </section>
 
-    <section class="section-block" id="contact">
-        <div class="section-heading">
-            <div class="section-kicker">04 / Contact</div>
+    <section class="supporting-section" id="about">
+        <div class="supporting-grid">
             <div>
-                <h2>Let’s make something useful.</h2>
-                <p>Punya pertanyaan, tawaran project, atau sekadar mau menyapa? Saya akan senang mendengar kabar dari kamu.</p>
+                <div class="section-label">03 / About</div>
+                <h2>Learning by making.</h2>
+                <div class="supporting-sign">— Zahir Muzakkiy</div>
+            </div>
+            <div>
+                @if ($profile && $profile->photo_secondary)
+                    <img class="photo-secondary" src="{{ asset('storage/' . $profile->photo_secondary) }}" alt="Tentang {{ $profile->name ?? 'Zahir' }}">
+                @endif
+                <p class="supporting-copy">{{ $profile->bio ?? 'Halo! Saya sedang belajar web development menggunakan Laravel. Saya suka membuat sesuatu dari ide sederhana, lalu memperbaikinya sedikit demi sedikit.' }}</p>
             </div>
         </div>
+    </section>
 
+    <section class="supporting-section" id="skills">
+        <div class="supporting-grid">
+            <div>
+                <div class="section-label">04 / Skills</div>
+                <h2>Tools I use.</h2>
+                <p class="supporting-copy">Skill yang sedang saya pelajari untuk membuat solusi digital yang berguna.</p>
+            </div>
+            <div class="skill-list">
+                @forelse ($skills as $skill)
+                    <div class="skill-item">
+                        <div class="skill-item-top">
+                            <span style="color: var(--ink); font: 700 .95rem 'DM Sans', sans-serif; letter-spacing: 0; text-transform: none;">{{ $skill->name }}</span>
+                            <span>{{ $skill->obtained_at ? \Carbon\Carbon::parse($skill->obtained_at)->format('Y') : 'learning' }}</span>
+                        </div>
+                        @if ($skill->description)<p>{{ $skill->description }}</p>@endif
+                        @if ($skill->certificate)
+                            @php $ext = strtolower(pathinfo($skill->certificate, PATHINFO_EXTENSION)); @endphp
+                            <button type="button" class="certificate-link" onclick="openCertModal('{{ asset('storage/' . $skill->certificate) }}', '{{ $ext }}')">Lihat sertifikat ↗</button>
+                        @endif
+                    </div>
+                @empty
+                    <p class="hero-description">Belum ada skill ditambahkan.</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <section class="supporting-section" id="contact">
         <div class="contact-grid">
             <div>
-                <p class="contact-copy">Tidak harus langsung punya brief yang sempurna. Ceritakan saja idenya, lalu kita mulai dari sana.</p>
+                <div class="section-label">05 / Contact</div>
+                <h2>Let's build something.</h2>
+                <p>Punya ide, tawaran project, atau sekadar mau menyapa? Ceritakan saja dari mana kita mulai.</p>
                 @if ($contactInfo && $contactInfo->email)
                     <a class="contact-email" href="mailto:{{ $contactInfo->email }}">{{ $contactInfo->email }}</a>
                 @endif
             </div>
-
             <div>
-                @if (session('success'))
-                    <p class="success-message">{{ session('success') }}</p>
-                @endif
+                @if (session('success'))<p class="success-message">{{ session('success') }}</p>@endif
                 <form class="contact-form" action="{{ route('contact.store') }}" method="POST">
                     @csrf
                     <input type="text" name="name" placeholder="Nama Anda" required>
                     <input type="email" name="email" placeholder="Email Anda" required>
-                    <textarea name="message" placeholder="Ceritakan sedikit tentang idemu..." required></textarea>
-                    <button class="button button-primary" type="submit">Kirim pesan <span>↗</span></button>
+                    <textarea name="message" placeholder="Pesan Anda..." required></textarea>
+                    <button class="editorial-button primary" type="submit">Kirim pesan <span>↗</span></button>
                 </form>
             </div>
         </div>
     </section>
 
-    <footer class="site-footer">© {{ date('Y') }} Zahir Muzakkiy — Built with Laravel.</footer>
+    <footer class="editorial-footer">✳ Made with purpose · Designed & built by Zay · © {{ date('Y') }}</footer>
 </div>
 
 <div id="certModal" class="modal-backdrop" onclick="if (event.target === this) closeCertModal()">
@@ -504,22 +437,16 @@
     }
 
     function closeCertModal() {
-        const modal = document.getElementById('certModal');
-        modal.classList.remove('is-open');
+        document.getElementById('certModal').classList.remove('is-open');
         document.getElementById('certModalContent').innerHTML = '';
     }
 
     document.querySelectorAll('[data-tilt-card]').forEach((card) => {
         card.addEventListener('pointermove', (event) => {
             const rect = card.getBoundingClientRect();
-            const x = (event.clientX - rect.left) / rect.width;
-            const y = (event.clientY - rect.top) / rect.height;
-            const rotateY = (x - .5) * 8;
-            const rotateX = (.5 - y) * 8;
-            card.style.setProperty('--rx', rotateX.toFixed(2) + 'deg');
-            card.style.setProperty('--ry', rotateY.toFixed(2) + 'deg');
+            card.style.setProperty('--rx', ((.5 - (event.clientY - rect.top) / rect.height) * 7).toFixed(2) + 'deg');
+            card.style.setProperty('--ry', (((event.clientX - rect.left) / rect.width - .5) * 7).toFixed(2) + 'deg');
         });
-
         card.addEventListener('pointerleave', () => {
             card.style.setProperty('--rx', '0deg');
             card.style.setProperty('--ry', '0deg');
@@ -528,16 +455,16 @@
 
     const heroRoleText = document.getElementById('heroRoleText');
     if (heroRoleText) {
-        const roleLines = ['Currently learning Laravel', 'Building with curiosity', 'Open for good ideas'];
+        const roles = ['currently learning Laravel', 'building with curiosity', 'open for good ideas'];
         let roleIndex = 0;
         setInterval(() => {
-            roleIndex = (roleIndex + 1) % roleLines.length;
+            roleIndex = (roleIndex + 1) % roles.length;
             heroRoleText.style.opacity = '0';
             setTimeout(() => {
-                heroRoleText.textContent = roleLines[roleIndex];
+                heroRoleText.textContent = roles[roleIndex];
                 heroRoleText.style.opacity = '1';
-            }, 180);
-        }, 2800);
+            }, 160);
+        }, 2600);
     }
 </script>
 @endpush
