@@ -1,38 +1,40 @@
-@extends('layouts.public')
+@extends('Layouts.public')
 
-@section('title', 'Semua Project - Portfolio')
+@section('title', 'All Projects — ' . config('app.name', 'Portfolio'))
+
+@push('head')
+<style>
+    .archive-page{width:min(1380px,100%);margin:auto;padding:0 4vw 80px}.archive-hero{position:relative;display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;padding:90px 3vw 60px;border-bottom:1px solid var(--line);overflow:hidden}.archive-hero:after{content:'02 / ARCHIVE';position:absolute;right:0;top:95px;color:var(--red);font:500 .62rem 'DM Mono';letter-spacing:.12em;writing-mode:vertical-rl}.archive-kicker,.archive-label{color:var(--red);font:500 .64rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase}.archive-title{margin:20px 0;font:800 clamp(4rem,10vw,9.5rem)/.74 'Playfair Display';letter-spacing:-.09em}.archive-title em{color:var(--red);font-style:italic}.archive-intro{max-width:420px;color:var(--muted);line-height:1.8;font-size:.88rem}.archive-note{max-width:330px;margin-top:45px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font:italic .85rem/1.6 'Playfair Display'}.archive-note span{display:block;margin-top:10px;color:var(--red);font-style:normal}.archive-stat{align-self:start;display:flex;justify-content:space-between;gap:30px;padding-top:3px;color:var(--muted);font:500 .62rem/1.5 'DM Mono';text-transform:uppercase}.archive-stat strong{display:block;margin-top:5px;color:var(--bone);font:700 3rem/.9 'Playfair Display';text-transform:none}.archive-orbit{position:absolute;right:13%;bottom:-43px;width:230px;height:230px;border:1px solid rgba(238,234,225,.2);border-radius:50%;animation:orbitFloat 8s ease-in-out infinite}.archive-orbit:before{content:'';position:absolute;inset:25px;border:1px dashed rgba(139,231,246,.22);border-radius:50%;animation:orbitSpin 20s linear infinite}.archive-orbit:after{content:'';position:absolute;top:-4px;left:50%;width:7px;height:7px;border-radius:50%;background:var(--bone);box-shadow:0 0 14px var(--bone)}.archive-body{display:grid;grid-template-columns:185px 1fr;gap:35px;padding:45px 3vw 0}.archive-sidebar{position:sticky;top:105px;align-self:start}.sidebar-heading{margin:0 0 15px;color:var(--red);font:500 .64rem 'DM Mono';letter-spacing:.12em;text-transform:uppercase}.sidebar-filter{display:flex;justify-content:space-between;width:100%;padding:10px 0;color:var(--muted);background:none;border:0;border-bottom:1px solid var(--line);font:500 .67rem 'DM Mono';text-align:left;cursor:pointer}.sidebar-filter:hover,.sidebar-filter.active{color:var(--bone)}.sidebar-quote{margin-top:75px;color:var(--muted);font:italic .8rem/1.6 'Playfair Display'}.archive-track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.archive-card{position:relative;min-height:340px;display:flex;flex-direction:column;background:linear-gradient(135deg,#10151b,#0c0f12);border:1px solid var(--line);clip-path:polygon(0 4%,96% 0,100% 94%,4% 100%);transition:transform .25s,border-color .25s,box-shadow .25s}.archive-card:hover{transform:translateY(-7px) rotate(-.4deg);border-color:var(--cyan);box-shadow:0 20px 55px rgba(0,0,0,.35)}.archive-visual{position:relative;height:170px;overflow:hidden;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#151b20 0 42%,#606a6c 43% 57%,#dedbd1 58%)}.archive-visual.has-image{background-position:center;background-size:cover;filter:grayscale(1)}.archive-visual:before{content:'{{ str_pad((string) $projects->count(), 2, '0', STR_PAD_LEFT) }}';position:absolute;left:17px;bottom:-18px;color:rgba(238,234,225,.75);font:800 6.5rem 'DM Sans';letter-spacing:-.1em}.archive-visual:after{content:'◉ ARCHIVE';position:absolute;right:15px;top:14px;color:var(--cyan);font:500 .56rem 'DM Mono'}.archive-card:nth-child(3n+2) .archive-visual{background-image:linear-gradient(125deg,#e0ddd4 0 29%,#202629 30% 65%,#8e9795 66%)}.archive-card:nth-child(3n) .archive-visual{background-image:linear-gradient(90deg,#11171a 0 22%,#c6c5bb 23% 73%,#4c585b 74%)}.archive-body-copy{display:flex;flex:1;flex-direction:column;padding:17px}.archive-meta{color:var(--red);font:500 .58rem 'DM Mono';text-transform:uppercase}.archive-card h2{margin:10px 0 7px;font:700 1.65rem 'Playfair Display'}.archive-card p{margin:0;color:var(--muted);font-size:.76rem;line-height:1.65}.archive-tech{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}.archive-tech span{padding:5px 7px;color:var(--bone);border:1px solid var(--line);font:500 .57rem 'DM Mono'}.archive-link{display:flex;justify-content:space-between;margin-top:auto;padding-top:18px;color:var(--bone);font:500 .62rem 'DM Mono';text-decoration:none;text-transform:uppercase}.archive-link:hover{color:var(--cyan)}.archive-cta{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px;margin:65px 3vw 0;padding:30px;border:1px solid var(--line);background:var(--panel);overflow:hidden}.archive-cta h2{max-width:450px;margin:0;font:700 clamp(1.8rem,4vw,3.7rem)/.9 'Playfair Display'}.archive-cta p{max-width:260px;color:var(--muted);font-size:.8rem;line-height:1.6}.archive-cta a{color:var(--red);font:500 .65rem 'DM Mono';text-decoration:none;text-transform:uppercase}.archive-cta a:hover{color:var(--cyan)}.archive-footer{display:flex;justify-content:space-between;margin:50px 3vw 0;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font:500 .6rem 'DM Mono'}.archive-footer a{color:var(--red);text-decoration:none}.archive-footer a:hover{color:var(--cyan)}@keyframes archivePulse{0%,100%{opacity:.5}50%{opacity:1}}@keyframes orbitSpin{to{transform:rotate(360deg)}}@keyframes orbitFloat{0%,100%{transform:rotate(-15deg) translateY(0)}50%{transform:rotate(-9deg) translateY(-8px)}}@media(max-width:900px){.archive-hero{grid-template-columns:1fr;gap:25px;padding-top:65px}.archive-orbit{right:5%;bottom:-80px}.archive-body{grid-template-columns:1fr}.archive-sidebar{position:static;display:flex;flex-wrap:wrap;gap:0 14px}.sidebar-heading,.sidebar-quote{width:100%}.sidebar-quote{margin:20px 0}.sidebar-filter{width:auto;min-width:145px;border:0}.archive-track{grid-template-columns:1fr}.archive-card{min-height:315px}.archive-cta{margin-left:0;margin-right:0}.archive-footer{margin-left:0;margin-right:0}}@media(max-width:560px){.archive-page{padding:0 18px 50px}.archive-title{font-size:clamp(3.8rem,18vw,6.5rem)}.archive-stat strong{font-size:2.4rem}.archive-cta,.archive-footer{align-items:flex-start;flex-direction:column;gap:20px}.archive-cta{padding:22px}}
+</style>
+@endpush
 
 @section('content')
-
-    <a href="{{ url('/') }}" class="back-link">&larr; Kembali ke Home</a>
-
-    <h1>Semua Project</h1>
-
-    @forelse ($projects as $project)
-        <div class="card project-card">
-            @if ($project->image)
-                <img src="{{ asset('storage/' . $project->image) }}" class="project-image" alt="{{ $project->title }}">
-            @endif
-
-            <h3 class="project-title">{{ $project->title }}</h3>
-            <p>{{ Str::limit($project->description, 100) }}</p>
-
-            @if ($project->tech_stack)
-                <div class="project-tech-list">
-                    @foreach (explode(',', $project->tech_stack) as $tech)
-                        <span class="tech-tag">{{ trim($tech) }}</span>
-                    @endforeach
-                </div>
-            @endif
-
-            <a href="{{ url('/projects/' . $project->id) }}" class="project-link">
-                View Detail &rarr;
-            </a>
-
-            <br><small class="project-date">Dibuat pada: {{ $project->created_at->format('d M Y') }}</small>
+<div class="archive-page">
+    <section class="archive-hero" aria-labelledby="archive-title">
+        <div><div class="archive-kicker">02 / Projects archive</div><h1 class="archive-title" id="archive-title"><em>All</em><br>Projects</h1><p class="archive-intro">Kumpulan project, eksperimen digital, dan karya yang tumbuh dari rasa ingin tahu—ditampilkan satu per satu agar setiap cerita punya ruang.</p><div class="archive-note">A good archive is not a pile of work. It is a map of how someone thinks.<span>— {{ $profile->name ?? 'Zay' }}</span></div></div>
+        <div class="archive-stat"><div>Total projects<strong>{{ str_pad((string) $projects->count(), 2, '0', STR_PAD_LEFT) }}</strong></div><div>Mode<strong>Selected / all</strong></div><div class="archive-orbit" aria-hidden="true"></div></div>
+    </section>
+    <section class="archive-body" aria-label="Project archive">
+        <aside class="archive-sidebar"><div class="sidebar-heading">Project index</div><button class="sidebar-filter active" type="button" data-filter="all"><span>All work</span><span>{{ $projects->count() }}</span></button><button class="sidebar-filter" type="button" data-filter="featured"><span>Featured</span><span>{{ $projects->where('is_featured', true)->count() }}</span></button><button class="sidebar-filter" type="button" data-filter="recent"><span>Latest</span><span>01</span></button><div class="sidebar-quote">Scroll slowly. Let the work introduce itself.</div></aside>
+        <div class="archive-track" data-archive-track>
+            @forelse ($projects as $project)
+                @php $category = $project->is_featured ? 'featured' : 'recent'; @endphp
+                <article class="archive-card" data-project-card data-type="{{ $category }}">
+                    @if ($project->image)<div class="archive-visual has-image" style="background-image:linear-gradient(rgba(9,11,14,.12),rgba(9,11,14,.28)),url('{{ asset('storage/' . $project->image) }}')"></div>@else<div class="archive-visual"></div>@endif
+                    <div class="archive-body-copy"><div class="archive-meta">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }} / {{ $project->is_featured ? 'Featured' : 'Project' }}</div><h2>{{ $project->title }}</h2><p>{{ $project->description }}</p>@if($project->tech_stack)<div class="archive-tech">@foreach(explode(',', $project->tech_stack) as $tech) @if(trim($tech) !== '')<span>{{ trim($tech) }}</span>@endif @endforeach</div>@endif<a class="archive-link" href="{{ url('/projects/' . $project->id) }}"><span>View project</span><span>→</span></a></div>
+                </article>
+            @empty
+                <p class="archive-intro">Belum ada project yang ditambahkan.</p>
+            @endforelse
         </div>
-    @empty
-        <p class="empty-text">Belum ada project ditambahkan.</p>
-    @endforelse
-
+    </section>
+    <section class="archive-cta"><div><div class="archive-kicker">More to come</div><h2>Every project leaves a trace.</h2></div><p>Kalau kamu punya ide yang ingin dibuat lebih jelas, mari mulai dari percakapan kecil.</p><a href="{{ url('/') }}#contact">Start a conversation ↗</a></section>
+    <footer class="archive-footer"><span>✳ ZAY / PROJECT ARCHIVE · {{ date('Y') }}</span><a href="{{ url('/') }}">Back to home ↑</a></footer>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelectorAll('[data-filter]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-filter]').forEach((item) => item.classList.remove('active')); button.classList.add('active'); const filter = button.dataset.filter; document.querySelectorAll('[data-project-card]').forEach((card) => { card.style.display = filter === 'all' || card.dataset.type === filter ? 'flex' : 'none'; }); }));
+</script>
+@endpush

@@ -1,242 +1,128 @@
-@extends('layouts.public')
+@extends('Layouts.public')
 
 @section('title', ($profile->name ?? 'Zahir Muzakkiy') . ' — Portfolio')
 
+@php
+    $portfolioProjects = $projects->values()->map(function ($project, $index) {
+        $fallbacks = [
+            'linear-gradient(140deg,#111 0 42%,#2f3b3e 43% 58%,#c7c5bd 59%)',
+            'linear-gradient(135deg,#c8c5ba 0 35%,#16191b 36% 65%,#747a78 66%)',
+            'linear-gradient(90deg,#1a1d20 0 28%,#ddd9d0 29% 68%,#9b9d98 69%)',
+        ];
+        $visual = $fallbacks[$index % count($fallbacks)];
+
+        if ($project->image) {
+            $visual = "url('" . asset('storage/' . $project->image) . "') center / cover no-repeat, " . $visual;
+        }
+
+        return [
+            'no' => str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT),
+            'type' => $project->tech_stack ? strtoupper(str_replace(',', ' / ', $project->tech_stack)) : 'WEB / PROJECT',
+            'title' => $project->title,
+            'copy' => $project->description ?? '',
+            'visual' => $visual,
+            'url' => url('/projects/' . $project->id),
+        ];
+    });
+    $nameParts = preg_split('/\s+/', trim($profile->name ?? 'Zahir Muzakkiy'));
+    $firstName = $nameParts[0] ?? 'Zahir';
+    $lastName = implode(' ', array_slice($nameParts, 1)) ?: 'Muzakkiy';
+@endphp
+
+@push('head')
+<style>
+    .skip-link{position:fixed;left:12px;top:12px;z-index:200;padding:8px 11px;color:var(--bg);background:var(--bone);font:500 .65rem 'DM Mono';transform:translateY(-150%);transition:transform .2s}.skip-link:focus{transform:none}
+    .modal-backdrop{display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.82)}.modal-backdrop.is-open{display:flex}.modal-card{position:relative;width:min(760px,100%);max-height:90vh;overflow:auto;padding:22px;background:var(--panel);border:1px solid var(--line);clip-path:polygon(0 2%,98% 0,100% 96%,2% 100%)}.modal-close{position:absolute;top:10px;right:10px;width:34px;height:34px;color:var(--bone);background:var(--red);border:0;cursor:pointer;font-size:1.2rem}.certificate-link{display:inline-block;margin-top:11px;color:var(--red);background:none;border:0;cursor:pointer;font:500 .63rem 'DM Mono';text-decoration:underline}.certificate-link:hover{color:var(--cyan)}
+</style>
+@endpush
+
 @section('content')
-
-<section class="section-wrap" id="home" style="display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:40px; padding-top:96px; padding-bottom:110px;">
-  <div>
-    <div class="eyebrow" style="display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--blue-2); background:rgba(77,141,255,0.08); border:1px solid var(--border); padding:6px 14px; border-radius:999px; margin-bottom:22px;">
-      <span style="width:7px; height:7px; border-radius:50%; background:#4ade80; animation:pulse 2s infinite;"></span> Available for internship / freelance
-    </div>
-
-    <h1 style="font-weight:800; font-size:clamp(2.3rem, 4.4vw, 3.4rem); line-height:1.12; letter-spacing:-1px;">
-      I'm <span class="grad-text">{{ $profile->name ?? 'Zahir Muzakkiy' }}</span> 👋
-    </h1>
-
-    <p style="margin-top:20px; max-width:500px; color:var(--muted); font-size:.98rem; line-height:1.7;">
-      @if ($profile && $profile->bio)
-          {{ $profile->bio }}
-      @else
-          You can call me <span style="color:var(--blue-2); font-weight:600;"><span id="typedNick" class="f-mono">Zakkiy</span><span style="width:2px; height:1em; background:var(--blue-2); display:inline-block; margin-left:2px; animation:blink 1s step-end infinite;"></span></span> —
-          siswa SMK yang lagi seru-serunya belajar web development, dari nulis Blade template, atur styling dengan Tailwind, sampai ngoprek build process pakai Vite.
-      @endif
-    </p>
-
-    <div style="margin-top:44px; display:flex; gap:36px;">
-      <div><b style="font-family:'Sora',sans-serif; font-size:1.3rem; display:block;">{{ $projects->count() }}+</b><span style="color:var(--muted); font-size:.8rem;">Project dibangun</span></div>
-      <div><b style="font-family:'Sora',sans-serif; font-size:1.3rem; display:block;">SMK</b><span style="color:var(--muted); font-size:.8rem;">Jenjang saat ini</span></div>
-      <div><b style="font-family:'Sora',sans-serif; font-size:1.3rem; display:block;">Laravel</b><span style="color:var(--muted); font-size:.8rem;">Fokus belajar</span></div>
-    </div>
-  </div>
-
-  <div style="position:relative;">
-    <div style="position:absolute; top:-18px; right:-22px; font-family:'JetBrains Mono',monospace; font-size:.72rem; background:rgba(16,20,29,0.9); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--blue-2); animation:float 5s ease-in-out infinite;">
-      const dev = &#123;<br>&nbsp;&nbsp;role: "Web Dev"<br>&#125;
-    </div>
-
-    <div style="background:linear-gradient(180deg, var(--panel-2), var(--panel)); border:1px solid var(--border); border-radius:var(--radius); box-shadow:0 30px 60px -20px rgba(0,0,0,0.6); overflow:hidden;">
-      <div style="display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.02);">
-        <div style="width:10px; height:10px; border-radius:50%; background:#ff5f57;"></div>
-        <div style="width:10px; height:10px; border-radius:50%; background:#febc2e;"></div>
-        <div style="width:10px; height:10px; border-radius:50%; background:#28c840;"></div>
-        <div style="margin-left:10px; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--muted);">zahir.dev</div>
-      </div>
-      <div style="padding:34px 30px 30px; display:flex; flex-direction:column; align-items:center;">
-        <div style="width:168px; height:168px; border-radius:50%; padding:3px; background:linear-gradient(135deg, var(--blue), var(--blue-2)); display:flex; align-items:center; justify-content:center;">
-          <div style="width:100%; height:100%; border-radius:50%; background:var(--panel); display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            @if ($profile && $profile->photo)
-              <img src="{{ asset('storage/' . $profile->photo) }}" style="width:100%; height:100%; object-fit:cover;">
-            @else
-              <div style="font-family:'Sora',sans-serif; font-weight:700; font-size:2.4rem; color:var(--blue-2);">ZM</div>
-            @endif
-          </div>
+<div class="page" id="home">
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+            <div class="kicker"><b>01</b> / INTRO {{ date('Y') }}</div>
+            <h1 class="hero-title" id="hero-title"><span>{{ $firstName }}</span><br><span class="accent">{{ $lastName }}</span><small>{{ $profile->title ?? 'Web Developer' }}</small></h1>
+            <div class="rule"></div>
+            <p class="intro">{{ $profile->bio ?? 'I design and develop digital experiences that are simple, fast, and impactful.' }}</p>
+            <div class="meta"><div>Based in<strong>Indonesia</strong></div><div>Focus<strong>Web development</strong></div><div>Available<strong>For freelance</strong></div></div>
+            <div class="actions"><a class="action red" href="#projects">View selected work →</a><a class="action" href="#contact">Let's build ↗</a></div>
         </div>
-        <div style="margin-top:20px; display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--muted); background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:7px 14px; border-radius:999px;">
-          <span style="width:6px; height:6px; border-radius:50%; background:#4ade80; animation:pulse 2s infinite;"></span> currently learning Laravel
-        </div>
-      </div>
-    </div>
-
-    <div style="position:absolute; bottom:6px; left:-34px; font-family:'JetBrains Mono',monospace; font-size:.72rem; background:rgba(16,20,29,0.9); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--blue-2); animation:float 5s ease-in-out infinite .8s;">
-      status: <span style="color:#8891a7;">"online"</span>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section class="section-wrap" id="about">
-  <div class="eyebrow-title"># about.md</div>
-  <div class="card-dark" style="display:grid; grid-template-columns:2fr 1fr; gap:28px; align-items:center;">
-    <div>
-      <h2 style="font-size:1.8rem; margin-bottom:12px;">Tentang Saya</h2>
-      <p style="color:var(--muted); line-height:1.7;">{{ $profile->bio ?? 'Halo! Saya sedang belajar web development menggunakan Laravel.' }}</p>
-    </div>
-    @if ($profile && $profile->photo_secondary)
-      <img src="{{ asset('storage/' . $profile->photo_secondary) }}" style="width:100%; border-radius:12px; object-fit:cover;">
-    @endif
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section class="section-wrap" id="skills">
-  <div class="eyebrow-title"># skills.json</div>
-  <div class="card-dark">
-    <h2 style="font-size:1.8rem; margin-bottom:18px;">Skills / Keahlian</h2>
-
-    @forelse ($skills as $skill)
-      <div style="border-bottom:1px solid var(--border); padding:14px 0;">
-        <strong style="font-family:'Sora',sans-serif;">{{ $skill->name }}</strong>
-        @if ($skill->description)
-          <p style="color:var(--muted); font-size:.9rem; margin:5px 0;">{{ $skill->description }}</p>
-        @endif
-        @if ($skill->obtained_at)
-          <small style="color:var(--muted);">Diperoleh: {{ \Carbon\Carbon::parse($skill->obtained_at)->format('d M Y') }}</small>
-        @endif
-        @if ($skill->certificate)
-          @php $ext = strtolower(pathinfo($skill->certificate, PATHINFO_EXTENSION)); @endphp
-          <br><button type="button" onclick="openCertModal('{{ asset('storage/' . $skill->certificate) }}', '{{ $ext }}')" style="background:none; border:none; color:var(--blue-2); text-decoration:underline; cursor:pointer; padding:0; font-size:.9rem; margin-top:4px;">Lihat Sertifikat</button>
-        @endif
-      </div>
-    @empty
-      <p style="color:var(--muted);">Belum ada skill ditambahkan.</p>
-    @endforelse
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section class="section-wrap" id="projects">
-  <div class="eyebrow-title"># projects/</div>
-  <h2 style="font-size:1.8rem; margin-bottom:20px;">Daftar Project Terbaru</h2>
-
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px;">
-    @foreach ($projects as $project)
-      <div class="card-dark" style="padding:0; overflow:hidden;">
-        @if ($project->image)
-          <img src="{{ asset('storage/' . $project->image) }}" style="width:100%; height:160px; object-fit:cover;">
-        @endif
-        <div style="padding:20px;">
-          <h3 style="font-size:1.1rem; margin-bottom:8px;">{{ $project->title }}</h3>
-          <p style="color:var(--muted); font-size:.9rem; margin-bottom:12px;">{{ Str::limit($project->description, 90) }}</p>
-
-          @if ($project->tech_stack)
-            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;">
-              @foreach (explode(',', $project->tech_stack) as $tech)
-                <span style="font-family:'JetBrains Mono',monospace; font-size:.72rem; background:rgba(77,141,255,0.08); color:var(--blue-2); padding:3px 10px; border-radius:999px; border:1px solid var(--border);">{{ trim($tech) }}</span>
-              @endforeach
+        <div class="hero-art">
+            <div class="person">
+                <span class="feet-glow" aria-hidden="true"></span>
+                @if ($profile && $profile->photo)
+                    <div class="person-silhouette" style="display:none"></div>
+                    <img class="user-photo" id="userPhoto" src="{{ asset('storage/' . $profile->photo) }}" alt="{{ $profile->name ?? 'Zahir' }} full-body portrait" style="display:block">
+                    <img class="user-photo-ghost" id="userPhotoGhost" src="{{ asset('storage/' . $profile->photo) }}" alt="" aria-hidden="true" style="display:block">
+                @else
+                    <div class="person-silhouette" aria-label="Foto full-body belum diupload"></div>
+                    <img class="user-photo" id="userPhoto" alt="Your full-body cutout">
+                    <img class="user-photo-ghost" id="userPhotoGhost" alt="" aria-hidden="true">
+                @endif
+                <span class="person-note">Think<br>create<br>solve</span>
             </div>
-          @endif
-
-          <a href="{{ url('/projects/' . $project->id) }}" style="color:var(--blue-2); text-decoration:none; font-weight:600; font-size:.9rem;">View Detail &rarr;</a>
         </div>
-      </div>
-    @endforeach
-  </div>
+    </section>
 
-  <div style="margin-top:24px;">
-    <a href="{{ url('/all-projects') }}" class="btn btn-primary" style="font-family:'Inter',sans-serif; font-weight:600; font-size:.92rem; padding:13px 26px; border-radius:10px; text-decoration:none; display:inline-flex; background:linear-gradient(135deg, var(--blue), #3a6fe0); color:#fff;">
-      View All Projects &rarr;
-    </a>
-  </div>
-</section>
+    <section class="holo-section reveal" id="projects" aria-labelledby="projects-title">
+        <div class="section-head"><div><div class="section-label">02 / Selected work</div><h2 id="projects-title">Projects in motion.</h2></div><div class="section-head-tools"><span class="section-label">Swipe / drag</span><a href="{{ url('/all-projects') }}">All projects →</a></div></div>
+        <div class="holo-shell"><div class="holo-track" id="holoTrack"></div><div class="holo-controls"><button id="prev" type="button" aria-label="Previous project">←</button><button id="next" type="button" aria-label="Next project">→</button></div><div class="holo-dots" id="holoDots" aria-label="Project position"></div></div>
+    </section>
 
-<!-- CONTACT -->
-<section class="section-wrap" id="contact">
-  <div class="eyebrow-title"># contact.send()</div>
-  <div class="card-dark" style="display:grid; grid-template-columns:1fr 1.3fr; gap:32px;">
-    <div>
-      <h2 style="font-size:1.8rem; margin-bottom:10px;">Hubungi Saya</h2>
-      <p style="color:var(--muted); margin-bottom:20px; line-height:1.6;">Punya pertanyaan, tawaran project, atau sekadar mau menyapa? Silakan hubungi saya!</p>
+    <section class="about reveal" id="about" aria-labelledby="about-title">
+        <div><div class="section-label">03 / About</div><h2 id="about-title">Built with <span class="morph-word" id="morphWord">curiosity</span>.</h2><div class="signature">— {{ $profile->name ?? 'Zay' }}</div></div>
+        <div>
+            <div class="about-visual">
+                <div class="code-editor"><div class="code-lines"><span class="code-line">01  const creator = {</span><span class="code-line">02    name: <b>{{ $profile->name ?? 'Zahir' }}</b>,</span><span class="code-line">03    mode: <b>learning</b>,</span><span class="code-line">04    craft: <b>web experiences</b>,</span><span class="code-line">05    motion: <b>true</b>,</span><span class="code-line">06    idea: <b>make it real</b>,</span><span class="code-line">07  };</span><span class="code-line">08  creator.build()<span class="code-caret" aria-hidden="true"></span></span></div></div>
+                @if ($profile && $profile->photo_secondary)
+                    <div class="about-figure" style="display:none"></div>
+                    <img class="about-photo" id="aboutPhoto" src="{{ asset('storage/' . $profile->photo_secondary) }}" alt="Tentang {{ $profile->name ?? 'Zahir' }}" style="display:block">
+                @else
+                    <div class="about-figure" aria-label="Foto About belum diupload"></div>
+                    <img class="about-photo" id="aboutPhoto" alt="Your About cutout">
+                @endif
+            </div>
+            <p class="copy">{{ $profile->bio ?? 'Saya percaya website yang baik tidak harus ramai. Ia harus terasa jelas, punya karakter, dan membantu orang melakukan sesuatu dengan lebih mudah. Di sini saya belajar dengan cara membuat.' }}</p>
+            <p class="copy">Setiap project adalah catatan kecil dari proses belajar, eksperimen, dan keberanian untuk mencoba lagi.</p>
+        </div>
+    </section>
 
-      @if ($contactInfo && $contactInfo->email)
-        <p style="margin-bottom:10px;"><span style="color:var(--muted); font-size:.85rem;">Email</span><br>
-        <a href="mailto:{{ $contactInfo->email }}" style="color:var(--text); text-decoration:none; font-weight:600;">{{ $contactInfo->email }}</a></p>
-      @endif
+    <section class="skills reveal" id="skills" aria-labelledby="skills-title">
+        <div><div class="section-label">04 / Stack</div><h2 id="skills-title">Tools in progress.</h2><p class="copy">Skill, tools, dan sertifikat yang sedang saya kumpulkan untuk membuat solusi digital yang berguna.</p></div>
+        <div><div class="skill-cloud">
+            @forelse ($skills as $skill)
+                <span class="skill-chip">{{ $skill->name }}@if($skill->description) <small style="display:block;margin-top:5px;color:var(--muted);font-size:.56rem">{{ $skill->description }}</small>@endif</span>
+            @empty
+                <span class="skill-chip">Laravel / PHP</span><span class="skill-chip">HTML / CSS</span><span class="skill-chip">JavaScript</span><span class="skill-chip">Git / GitHub</span>
+            @endforelse
+        </div>
+        @foreach ($skills as $skill)
+            @if ($skill->certificate)
+                @php $extension = strtolower(pathinfo($skill->certificate, PATHINFO_EXTENSION)); @endphp
+                <button type="button" class="certificate-link" onclick="openCertModal('{{ asset('storage/' . $skill->certificate) }}', '{{ $extension }}')">Lihat sertifikat {{ $skill->name }} ↗</button>
+            @endif
+        @endforeach
+        </div>
+    </section>
 
-      @if ($contactInfo && $contactInfo->whatsapp)
-        <p style="margin-bottom:10px;"><span style="color:var(--muted); font-size:.85rem;">WhatsApp</span><br>
-        <a href="https://wa.me/{{ $contactInfo->whatsapp }}" target="_blank" style="color:var(--text); text-decoration:none; font-weight:600;">{{ $contactInfo->whatsapp }}</a></p>
-      @endif
+    <section class="contact reveal" id="contact" aria-labelledby="contact-title">
+        <div><div class="contact-orbit" aria-hidden="true"><span class="orbit-ball"></span><span class="orbit-ball two"></span><span class="orbit-ball three"></span></div><div class="section-label">05 / Contact</div><h2 id="contact-title">Let's make it real.</h2><p class="copy">Punya ide, project, atau masalah yang ingin dibuat lebih sederhana? Kirim pesan atau temukan saya di sini.</p><div class="contact-command" aria-live="polite"><span class="prompt">&gt;</span><span id="contactType" class="command-text">send good ideas</span><span class="command-cursor" aria-hidden="true"></span></div><div class="contact-list">
+            @if ($contactInfo?->instagram)<a class="social" href="{{ $contactInfo->instagram }}" target="_blank" rel="noreferrer">Instagram ↗</a>@endif
+            @if ($contactInfo?->linkedin)<a class="social" href="{{ $contactInfo->linkedin }}" target="_blank" rel="noreferrer">LinkedIn ↗</a>@endif
+            @if ($contactInfo?->github)<a class="social" href="{{ $contactInfo->github }}" target="_blank" rel="noreferrer">GitHub ↗</a>@endif
+            @if ($contactInfo?->whatsapp)<a class="social" href="https://wa.me/{{ preg_replace('/\D+/', '', $contactInfo->whatsapp) }}" target="_blank" rel="noreferrer">WhatsApp ↗</a>@endif
+        </div>@if ($contactInfo?->email)<a class="social" href="mailto:{{ $contactInfo->email }}">{{ $contactInfo->email }}</a>@endif</div>
+        <div><form class="contact-form" action="{{ route('contact.store') }}" method="POST"><span class="form-label">// type your message</span>@csrf<input name="name" placeholder="Your name" required><input name="email" type="email" placeholder="Your email" required><textarea name="message" placeholder="Tell me about it..." required></textarea><button class="action red" type="submit">Send message ↗</button></form>@if(session('success'))<p class="success-message">{{ session('success') }}</p>@endif</div>
+    </section>
 
-      <div style="display:flex; gap:12px; margin-top:16px;">
-        @if ($contactInfo && $contactInfo->github)
-          <a href="{{ $contactInfo->github }}" target="_blank" style="width:38px; height:38px; border-radius:50%; background:var(--panel-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--blue-2); font-size:.75rem; font-weight:700; text-decoration:none;">GH</a>
-        @endif
-        @if ($contactInfo && $contactInfo->linkedin)
-          <a href="{{ $contactInfo->linkedin }}" target="_blank" style="width:38px; height:38px; border-radius:50%; background:var(--panel-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--blue-2); font-size:.75rem; font-weight:700; text-decoration:none;">in</a>
-        @endif
-        @if ($contactInfo && $contactInfo->instagram)
-          <a href="{{ $contactInfo->instagram }}" target="_blank" style="width:38px; height:38px; border-radius:50%; background:var(--panel-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--blue-2); font-size:.75rem; font-weight:700; text-decoration:none;">IG</a>
-        @endif
-      </div>
-    </div>
-
-    <div>
-      @if (session('success'))
-        <p style="margin-bottom:14px; padding:12px 16px; background:rgba(74,222,128,0.1); color:#4ade80; border-radius:8px; font-size:.9rem; font-weight:600;">{{ session('success') }}</p>
-      @endif
-
-      <form action="{{ route('contact.store') }}" method="POST" style="display:flex; flex-direction:column; gap:10px;">
-        @csrf
-        <input type="text" name="name" placeholder="Nama Anda" required style="background:var(--panel-2); border:1px solid var(--border); color:var(--text); padding:12px 14px; border-radius:8px; font-family:'Inter',sans-serif;">
-        <input type="email" name="email" placeholder="Email Anda" required style="background:var(--panel-2); border:1px solid var(--border); color:var(--text); padding:12px 14px; border-radius:8px; font-family:'Inter',sans-serif;">
-        <textarea name="message" placeholder="Pesan Anda..." rows="4" required style="background:var(--panel-2); border:1px solid var(--border); color:var(--text); padding:12px 14px; border-radius:8px; font-family:'Inter',sans-serif; resize:vertical;"></textarea>
-        <button type="submit" style="font-weight:600; padding:13px 26px; border-radius:10px; border:none; cursor:pointer; background:linear-gradient(135deg, var(--blue), #3a6fe0); color:#fff;">Kirim Pesan</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<footer style="text-align:center; color:var(--muted); font-size:.85rem; padding:30px; position:relative; z-index:1;">
-  Built with Laravel 🚀
-</footer>
-
-<!-- Certificate Modal -->
-<div id="certModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:1000; align-items:center; justify-content:center;">
-  <div style="background:var(--panel); border:1px solid var(--border); padding:20px; border-radius:12px; max-width:90%; max-height:90%; overflow:auto; position:relative;">
-    <button onclick="closeCertModal()" style="position:absolute; top:10px; right:10px; background:var(--blue); color:white; border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-weight:bold;">&times;</button>
-    <div id="certModalContent" style="margin-top:20px;"></div>
-  </div>
+    <footer><span class="footer-copy"><span class="footer-pulse" aria-hidden="true"></span> ZAY / DARK EDITORIAL · Designed & built by {{ $profile->name ?? 'Zay' }} · © {{ date('Y') }}</span></footer>
 </div>
 
-<script>
-function openCertModal(url, type) {
-    const modal = document.getElementById('certModal');
-    const content = document.getElementById('certModalContent');
-    content.innerHTML = type === 'pdf'
-        ? '<iframe src="' + url + '" style="width:80vw; height:80vh; border:none;"></iframe>'
-        : '<img src="' + url + '" style="max-width:80vw; max-height:80vh;">';
-    modal.style.display = 'flex';
-}
-function closeCertModal() {
-    document.getElementById('certModal').style.display = 'none';
-    document.getElementById('certModalContent').innerHTML = '';
-}
-
-@if (!($profile && $profile->bio))
-const nickData = [
-    { word: "Zakkiy", font: "f-mono" }, { word: "Zahir", font: "f-display" },
-    { word: "Kiyyza", font: "f-sora" }, { word: "Seki", font: "f-mono" },
-    { word: "Njak", font: "f-display" }, { word: "Sahir", font: "f-sora" },
-    { word: "Muza", font: "f-mono" }
-];
-const nickEl = document.getElementById('typedNick');
-let ni = 0, nci = 0, nDeleting = false;
-function tickNick(){
-    const item = nickData[ni];
-    if(!nDeleting){
-        nci++;
-        nickEl.textContent = item.word.slice(0, nci);
-        if(nci === item.word.length){ nDeleting = true; setTimeout(tickNick, 1800); return; }
-    } else {
-        nci--;
-        nickEl.textContent = item.word.slice(0, nci);
-        if(nci === 0){ nDeleting = false; ni = (ni + 1) % nickData.length; }
-    }
-    setTimeout(tickNick, nDeleting ? 55 : 110);
-}
-setTimeout(tickNick, 800);
-@endif
-</script>
-
+<div id="certModal" class="modal-backdrop" onclick="if (event.target === this) closeCertModal()"><div class="modal-card"><button class="modal-close" type="button" onclick="closeCertModal()" aria-label="Close certificate">&times;</button><div id="certModalContent"></div></div></div>
 @endsection
+
+@push('scripts')
+<script>
+    window.portfolioProjects = @json($portfolioProjects);
+</script>
+@endpush

@@ -27,7 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/all-projects', function () {
-    $projects =  Project::where('is_featured', true)->latest()->get();
+    $projects = Project::latest()->get();
     return view('projects.index', compact('projects'));
 });
 
@@ -36,7 +36,9 @@ Route::get('/projects/{id}', function ($id) {
     return view('projects.show', compact('project'));
 });
 
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('contact.store');
 
 /*
 |--------------------------------------------------------------------------
