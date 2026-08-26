@@ -41,12 +41,12 @@
 
     .hero-editorial {
         position: relative;
-        min-height: calc(100vh - 76px);
+        min-height: 560px;
         display: grid;
         grid-template-columns: minmax(0, 1.18fr) minmax(360px, .82fr);
         align-items: center;
         gap: 35px;
-        padding: 70px 0 44px;
+        padding: 54px 0 28px;
         border-bottom: 1px solid var(--ink);
     }
 
@@ -82,8 +82,8 @@
     }
 
     .hero-title .red { color: var(--red); font-style: italic; }
-    .hero-title .slash { color: var(--red); font-family: 'DM Sans', sans-serif; font-weight: 400; }
-    .hero-title .small-word { display: block; font-size: .56em; letter-spacing: -.055em; }
+    .hero-title .slash { color: var(--red); font-family: 'DM Sans', sans-serif; font-weight: 400; margin-left: .08em; }
+    .hero-title .small-word { display: block; margin-top: 8px; font-size: .56em; letter-spacing: -.055em; }
 
     .hero-rule { width: min(760px, 100%); height: 2px; margin: 22px 0 26px; background: var(--ink); }
 
@@ -126,7 +126,7 @@
 
     .hero-figure {
         position: relative;
-        min-height: 620px;
+        min-height: 520px;
         display: flex;
         align-items: flex-end;
         justify-content: center;
@@ -157,11 +157,12 @@
     .hero-person {
         position: relative;
         z-index: 2;
-        width: min(100%, 475px);
-        max-height: 630px;
+        width: min(100%, 420px);
+        max-height: 560px;
         object-fit: contain;
         object-position: center bottom;
         filter: grayscale(1) contrast(1.08) drop-shadow(16px 18px 0 rgba(17, 17, 17, .07));
+        mix-blend-mode: multiply;
         animation: personFloat 6s ease-in-out infinite;
     }
 
@@ -187,7 +188,7 @@
     .hero-note::before { content: '→'; display: block; color: var(--red); font-size: 1.6rem; }
 
     .selected-work {
-        padding: 26px 0 0;
+        padding: 20px 0 0;
         border-bottom: 1px solid var(--ink);
     }
 
