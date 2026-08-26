@@ -41,12 +41,12 @@
 
     .hero-editorial {
         position: relative;
-        min-height: 560px;
+        min-height: 475px;
         display: grid;
         grid-template-columns: minmax(0, 1.18fr) minmax(360px, .82fr);
         align-items: center;
         gap: 35px;
-        padding: 54px 0 28px;
+        padding: 30px 0 18px;
         border-bottom: 1px solid var(--ink);
     }
 
@@ -126,7 +126,7 @@
 
     .hero-figure {
         position: relative;
-        min-height: 520px;
+        min-height: 410px;
         display: flex;
         align-items: flex-end;
         justify-content: center;
@@ -157,8 +157,8 @@
     .hero-person {
         position: relative;
         z-index: 2;
-        width: min(100%, 420px);
-        max-height: 560px;
+        width: min(100%, 370px);
+        max-height: 475px;
         object-fit: contain;
         object-position: center bottom;
         filter: grayscale(1) contrast(1.08) drop-shadow(16px 18px 0 rgba(17, 17, 17, .07));
@@ -188,7 +188,7 @@
     .hero-note::before { content: '→'; display: block; color: var(--red); font-size: 1.6rem; }
 
     .selected-work {
-        padding: 20px 0 0;
+        padding: 14px 0 0;
         border-bottom: 1px solid var(--ink);
     }
 
@@ -214,7 +214,7 @@
 
     .work-card:hover { background: var(--ink); color: var(--white); }
     .work-card:hover .work-card-meta, .work-card:hover .work-card-link { color: #d7d3ca; }
-    .work-card-image { width: 100%; height: 90px; object-fit: cover; filter: grayscale(1); border-bottom: 1px solid var(--ink); }
+    .work-card-image { width: 100%; height: 72px; object-fit: cover; filter: grayscale(1); border-bottom: 1px solid var(--ink); }
     .work-card-body { padding: 11px 13px; }
     .work-card-number { color: var(--red); font: .66rem 'DM Mono', monospace; }
     .work-card-title { margin: 7px 0 4px; font: 700 1rem 'Playfair Display', serif; }
@@ -264,7 +264,7 @@
     @media (max-width: 900px) {
         .hero-editorial { min-height: auto; grid-template-columns: 1fr; padding-top: 75px; }
         .hero-copy { padding-left: 0; }
-        .hero-figure { min-height: 470px; order: -1; }
+        .hero-figure { min-height: 430px; order: -1; }
         .hero-title { font-size: clamp(3.2rem, 12vw, 7rem); }
         .work-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .supporting-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -275,7 +275,7 @@
         .hero-editorial { padding-top: 58px; }
         .hero-title { font-size: clamp(2.75rem, 15vw, 5rem); }
         .hero-meta { gap: 14px; }
-        .hero-figure { min-height: 390px; }
+        .hero-figure { min-height: 360px; }
         .hero-note { right: 0; bottom: 6%; }
         .work-strip { grid-template-columns: 1fr; }
         .supporting-section { padding: 65px 0; }

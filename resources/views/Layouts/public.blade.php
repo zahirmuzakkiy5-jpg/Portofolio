@@ -63,8 +63,8 @@
 
         .site-brand {
             color: var(--ink);
-            font: 800 1.6rem/1 'DM Sans', sans-serif;
-            letter-spacing: -.08em;
+            font: 800 1.45rem/1 'DM Sans', sans-serif;
+            letter-spacing: .04em;
             text-decoration: none;
         }
 
@@ -116,6 +116,8 @@
 
         .header-contact:hover { background: var(--red); transform: translateY(-2px); }
         .header-contact span { color: #f0b19f; }
+        .header-contact .availability-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: availabilityPulse 1.8s ease-in-out infinite; }
+        @keyframes availabilityPulse { 0%, 100% { opacity: .45; transform: scale(.85); } 50% { opacity: 1; transform: scale(1.1); } }
 
         @media (max-width: 720px) {
             .site-header { min-height: 68px; padding: 0 20px; }
@@ -131,17 +133,17 @@
     <div class="site-grain"></div>
 
     <header class="site-header">
-        <a href="{{ url('/') }}" class="site-brand" aria-label="Kembali ke halaman utama">Zay<span>.</span></a>
+        <a href="{{ url('/') }}" class="site-brand" aria-label="Kembali ke halaman utama">ZAY<span>.</span></a>
 
         <nav class="site-nav" aria-label="Navigasi utama">
-            <a href="{{ url('/') }}#home">Home</a>
-            <a href="{{ url('/') }}#about">Tentang Saya</a>
-            <a href="{{ url('/') }}#skills">Skills</a>
-            <a href="{{ url('/') }}#projects">Projects</a>
+            <a href="{{ url('/') }}#projects">Work</a>
+            <a href="{{ url('/') }}#about">About</a>
+            <a href="{{ url('/all-projects') }}">Journal</a>
+            <a href="{{ url('/') }}#skills">Stack</a>
             <a href="{{ url('/') }}#contact">Contact</a>
         </nav>
 
-        <a href="{{ url('/') }}#contact" class="header-contact">Mari ngobrol <span>↗</span></a>
+        <a href="{{ url('/') }}#contact" class="header-contact"><span class="availability-dot"></span> Available for projects</a>
     </header>
 
     <main>
