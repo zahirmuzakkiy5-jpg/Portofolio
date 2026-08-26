@@ -41,12 +41,12 @@
 
     .hero-editorial {
         position: relative;
-        min-height: 475px;
+        min-height: 420px;
         display: grid;
         grid-template-columns: minmax(0, 1.18fr) minmax(360px, .82fr);
         align-items: center;
         gap: 35px;
-        padding: 30px 0 18px;
+        padding: 20px 0 10px;
         border-bottom: 1px solid var(--ink);
     }
 
@@ -59,7 +59,7 @@
         font: 500 1.2rem 'DM Mono', monospace;
     }
 
-    .hero-copy { padding: 38px 0 0 5vw; }
+    .hero-copy { padding: 20px 0 0 3vw; }
 
     .archive-label {
         display: inline-flex;
@@ -126,7 +126,7 @@
 
     .hero-figure {
         position: relative;
-        min-height: 410px;
+        min-height: 360px;
         display: flex;
         align-items: flex-end;
         justify-content: center;
@@ -157,8 +157,8 @@
     .hero-person {
         position: relative;
         z-index: 2;
-        width: min(100%, 370px);
-        max-height: 475px;
+        width: min(100%, 340px);
+        max-height: 420px;
         object-fit: contain;
         object-position: center bottom;
         filter: grayscale(1) contrast(1.08) drop-shadow(16px 18px 0 rgba(17, 17, 17, .07));
@@ -197,7 +197,7 @@
     .work-heading h2 { margin: 6px 0 0; font: 700 clamp(1.6rem, 3vw, 2.5rem)/1 'Playfair Display', serif; }
     .work-heading a { color: var(--red); font: .68rem 'DM Mono', monospace; text-decoration: none; text-transform: uppercase; }
 
-    .work-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .work-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
 
     .work-card {
         --rx: 0deg;
@@ -264,7 +264,7 @@
     @media (max-width: 900px) {
         .hero-editorial { min-height: auto; grid-template-columns: 1fr; padding-top: 75px; }
         .hero-copy { padding-left: 0; }
-        .hero-figure { min-height: 430px; order: -1; }
+        .hero-figure { min-height: 400px; order: -1; }
         .hero-title { font-size: clamp(3.2rem, 12vw, 7rem); }
         .work-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .supporting-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -275,7 +275,7 @@
         .hero-editorial { padding-top: 58px; }
         .hero-title { font-size: clamp(2.75rem, 15vw, 5rem); }
         .hero-meta { gap: 14px; }
-        .hero-figure { min-height: 360px; }
+        .hero-figure { min-height: 340px; }
         .hero-note { right: 0; bottom: 6%; }
         .work-strip { grid-template-columns: 1fr; }
         .supporting-section { padding: 65px 0; }
@@ -287,7 +287,7 @@
 <div class="editorial-page">
     <section class="hero-editorial" id="home">
         <div class="hero-copy">
-            <div class="archive-label">Portfolio archive</div>
+            <div class="archive-label">Intro / 2024</div>
             <h1 class="hero-title">
                 <span>Zahir</span>
                 <span class="red">Muzakkiy</span><span class="slash"> /</span>
@@ -324,14 +324,14 @@
     <section class="selected-work" id="projects">
         <div class="work-heading">
             <div>
-                <div class="section-label">02 / Selected works</div>
-                <h2>Projects in progress.</h2>
+                <div class="section-label">02 / Selected work</div>
+                <h2>Selected projects.</h2>
             </div>
             <a href="{{ url('/all-projects') }}">All projects →</a>
         </div>
 
         <div class="work-strip">
-            @forelse ($projects->take(4) as $project)
+            @forelse ($projects->take(5) as $project)
                 <article class="work-card" data-tilt-card>
                     @if ($project->image)
                         <img class="work-card-image" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
