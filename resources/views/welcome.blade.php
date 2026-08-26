@@ -86,7 +86,17 @@
         letter-spacing: -.055em;
     }
 
-    .hero h1 em { color: var(--coral); font-style: italic; }
+    .hero h1 em { color: var(--coral); font-style: italic; display: inline-block; animation: titlePulse 4s ease-in-out infinite; }
+
+    .hero-title-mark {
+        display: inline-block;
+        margin-left: 8px;
+        color: var(--coral);
+        font: 500 .8rem 'DM Mono', monospace;
+        letter-spacing: .1em;
+        vertical-align: top;
+        animation: editorialBlink 1.6s steps(1, end) infinite;
+    }
 
     .hero-copy {
         max-width: 510px;
@@ -120,6 +130,18 @@
         margin-top: 26px;
         color: #778092;
         font: .72rem/1.6 'DM Mono', monospace;
+    }
+
+    .hero-note strong { color: var(--red); font-weight: 500; }
+
+    .hero-note-cursor {
+        display: inline-block;
+        width: 7px;
+        height: 14px;
+        margin-left: 4px;
+        background: var(--red);
+        vertical-align: -2px;
+        animation: editorialBlink .9s steps(1, end) infinite;
     }
 
     .hero-visual {
@@ -226,8 +248,22 @@
     .projects-toolbar a { color: var(--coral); font-weight: 700; text-decoration: none; }
 
     .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-    .project-card { background: var(--white); border: 1px solid var(--line); transition: transform .22s ease, box-shadow .22s ease; }
-    .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .project-card {
+        --rx: 0deg;
+        --ry: 0deg;
+        --lift: 0px;
+        position: relative;
+        background: var(--white);
+        border: 1px solid var(--line);
+        transition: transform .18s ease, box-shadow .22s ease;
+        transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
+        transform-style: preserve-3d;
+        will-change: transform;
+    }
+
+    .project-card:nth-child(2) { animation: projectFloat 5s ease-in-out 1s infinite; }
+    .project-card:nth-child(3) { animation: projectFloat 5.4s ease-in-out 1.7s infinite; }
+    .project-card:hover { --lift: -7px; box-shadow: var(--shadow); animation-play-state: paused; }
     .project-image, .project-image-placeholder { display: block; width: 100%; height: 190px; object-fit: cover; background: var(--paper-deep); }
     .project-image-placeholder { display: grid; place-items: center; color: var(--coral); font: italic 2.5rem 'Playfair Display', serif; }
     .project-content { padding: 20px; }
@@ -255,6 +291,25 @@
     .modal-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; cursor: pointer; border: 0; background: var(--coral); color: var(--white); font-size: 1.3rem; }
     #certModalContent { margin-top: 18px; text-align: center; }
 
+    @keyframes titlePulse {
+        0%, 100% { transform: translateY(0) rotate(-1deg); }
+        50% { transform: translateY(-5px) rotate(1deg); }
+    }
+
+    @keyframes editorialBlink {
+        0%, 45%, 100% { opacity: 1; }
+        46%, 55% { opacity: 0; }
+    }
+
+    @keyframes projectFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+
     @media (max-width: 850px) {
         .home-shell { padding: 0 24px 60px; }
         .hero { grid-template-columns: 1fr; padding-top: 58px; }
@@ -279,7 +334,7 @@
     <section class="hero" id="home">
         <div class="hero-copy-block">
             <div class="eyebrow">Portfolio / 2026</div>
-            <h1>I'm <em>{{ $profile->name ?? 'Zahir Muzakkiy' }}</em>.</h1>
+            <h1>I'm <em>{{ $profile->name ?? 'Zahir Muzakkiy' }}</em><span class="hero-title-mark">/ 01</span>.</h1>
             <p class="hero-copy">
                 {{ $profile->bio ?? 'Siswa SMK yang sedang membangun kemampuan web development, satu project kecil demi satu project yang lebih berani.' }}
             </p>
@@ -289,7 +344,7 @@
                 <a href="#contact" class="button button-secondary">Mari ngobrol</a>
             </div>
 
-            <p class="hero-note">Currently learning Laravel · open for internship / freelance</p>
+            <p class="hero-note"><strong id="heroRoleText">Currently learning Laravel</strong> · open for internship / freelance<span class="hero-note-cursor" aria-hidden="true"></span></p>
         </div>
 
         <div class="hero-visual">
@@ -367,7 +422,7 @@
 
         <div class="project-grid">
             @forelse ($projects as $project)
-                <article class="project-card">
+                <article class="project-card" data-tilt-card>
                     @if ($project->image)
                         <img class="project-image" src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
                     @else
@@ -452,6 +507,37 @@
         const modal = document.getElementById('certModal');
         modal.classList.remove('is-open');
         document.getElementById('certModalContent').innerHTML = '';
+    }
+
+    document.querySelectorAll('[data-tilt-card]').forEach((card) => {
+        card.addEventListener('pointermove', (event) => {
+            const rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = (event.clientY - rect.top) / rect.height;
+            const rotateY = (x - .5) * 8;
+            const rotateX = (.5 - y) * 8;
+            card.style.setProperty('--rx', rotateX.toFixed(2) + 'deg');
+            card.style.setProperty('--ry', rotateY.toFixed(2) + 'deg');
+        });
+
+        card.addEventListener('pointerleave', () => {
+            card.style.setProperty('--rx', '0deg');
+            card.style.setProperty('--ry', '0deg');
+        });
+    });
+
+    const heroRoleText = document.getElementById('heroRoleText');
+    if (heroRoleText) {
+        const roleLines = ['Currently learning Laravel', 'Building with curiosity', 'Open for good ideas'];
+        let roleIndex = 0;
+        setInterval(() => {
+            roleIndex = (roleIndex + 1) % roleLines.length;
+            heroRoleText.style.opacity = '0';
+            setTimeout(() => {
+                heroRoleText.textContent = roleLines[roleIndex];
+                heroRoleText.style.opacity = '1';
+            }, 180);
+        }, 2800);
     }
 </script>
 @endpush
